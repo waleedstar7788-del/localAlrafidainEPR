@@ -38,7 +38,7 @@
 
                 <!-- Floating Glow Icon -->
                 <Border Grid.Column="1" Width="56" Height="56" CornerRadius="28" Background="#1510B981" VerticalAlignment="Center">
-                    <materialDesign:PackIcon Kind="SystemUpdate" Width="30" Height="30" Foreground="#10B981" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="Update" Width="30" Height="30" Foreground="#10B981" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
         </Border>
@@ -94,7 +94,7 @@
                         <!-- Version Badge -->
                         <Border Grid.Column="1" Background="#1510B981" BorderBrush="#10B981" BorderThickness="1" CornerRadius="10" Padding="14,6">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Sparkles" Width="16" Height="16" Foreground="#10B981" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="Creation" Width="16" Height="16" Foreground="#10B981" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding AvailableUpdate.Version, StringFormat='الإصدار v{0}'}" FontSize="15" FontWeight="Bold" Foreground="#10B981" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Border>
