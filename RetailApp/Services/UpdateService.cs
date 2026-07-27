@@ -4,8 +4,10 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml;
 using RetailApp.Interfaces;
 using RetailApp.Models;
 
@@ -24,7 +26,6 @@ namespace RetailApp.Services
         {
             _versionService = versionService;
             _httpClient = new HttpClient();
-            // GitHub API يتطلب وجود Header User-Agent
             _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("RetailApp-Updater", "1.0"));
         }
 
@@ -32,62 +33,103 @@ namespace RetailApp.Services
         {
             try
             {
+                // 1. محاولة الفحص من خلال REST API الرسمي لـ GitHub
                 string apiUrl = $"https://api.github.com/repos/{GitHubOwner}/{GitHubRepo}/releases/latest";
                 var response = await _httpClient.GetAsync(apiUrl);
 
-                if (!response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
-                    return null;
-                }
+                    var content = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(content);
+                    var root = doc.RootElement;
 
-                var content = await response.Content.ReadAsStringAsync();
-                using var doc = JsonDocument.Parse(content);
-                var root = doc.RootElement;
+                    string tagName = root.TryGetProperty("tag_name", out var tagElem) ? tagElem.GetString() ?? "" : "";
+                    string cleanVersion = tagName.TrimStart('v', 'V');
+                    string releaseNotes = root.TryGetProperty("body", out var bodyElem) ? bodyElem.GetString() ?? "" : "";
 
-                string tagName = root.TryGetProperty("tag_name", out var tagElem) ? tagElem.GetString() ?? "" : "";
-                string cleanVersion = tagName.TrimStart('v', 'V');
-                string releaseNotes = root.TryGetProperty("body", out var bodyElem) ? bodyElem.GetString() ?? "" : "";
-
-                DateTime releaseDate = DateTime.Now;
-                if (root.TryGetProperty("published_at", out var pubElem) && pubElem.TryGetDateTime(out var parsedDate))
-                {
-                    releaseDate = parsedDate;
-                }
-
-                // البحث عن رابط التنزيل المباشر في أصول GitHub Release
-                string downloadUrl = "";
-                if (root.TryGetProperty("assets", out var assetsElem) && assetsElem.ValueKind == JsonValueKind.Array)
-                {
-                    foreach (var asset in assetsElem.EnumerateArray())
+                    DateTime releaseDate = DateTime.Now;
+                    if (root.TryGetProperty("published_at", out var pubElem) && pubElem.TryGetDateTime(out var parsedDate))
                     {
-                        string dl = asset.TryGetProperty("browser_download_url", out var dlElem) ? dlElem.GetString() ?? "" : "";
-                        if (!string.IsNullOrEmpty(dl))
+                        releaseDate = parsedDate;
+                    }
+
+                    string downloadUrl = "";
+                    if (root.TryGetProperty("assets", out var assetsElem) && assetsElem.ValueKind == JsonValueKind.Array)
+                    {
+                        foreach (var asset in assetsElem.EnumerateArray())
                         {
-                            downloadUrl = dl;
-                            // تفضيل الملفات التنفيذية والمضغوطة
-                            string name = asset.TryGetProperty("name", out var nameElem) ? nameElem.GetString() ?? "" : "";
-                            if (name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || name.EndsWith(".msi", StringComparison.OrdinalIgnoreCase))
+                            string dl = asset.TryGetProperty("browser_download_url", out var dlElem) ? dlElem.GetString() ?? "" : "";
+                            if (!string.IsNullOrEmpty(dl))
                             {
-                                break;
+                                downloadUrl = dl;
+                                string name = asset.TryGetProperty("name", out var nameElem) ? nameElem.GetString() ?? "" : "";
+                                if (name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || name.EndsWith(".msi", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    break;
+                                }
                             }
                         }
                     }
+
+                    if (string.IsNullOrEmpty(downloadUrl))
+                    {
+                        downloadUrl = $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{tagName}/RetailApp_Setup.exe";
+                    }
+
+                    return new UpdateInfo
+                    {
+                        Version = cleanVersion,
+                        BuildNumber = cleanVersion,
+                        ReleaseDate = releaseDate,
+                        ReleaseNotes = releaseNotes,
+                        DownloadUrl = downloadUrl,
+                        IsMandatory = false
+                    };
                 }
 
-                if (string.IsNullOrEmpty(downloadUrl) && root.TryGetProperty("zipball_url", out var zipElem))
+                // 2. المحرك الاحتياطي: فحص Atom Feed المفتوح (يتجاوز قيود Rate Limit كلياً 100%)
+                string atomUrl = $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases.atom";
+                var atomResponse = await _httpClient.GetAsync(atomUrl);
+
+                if (atomResponse.IsSuccessStatusCode)
                 {
-                    downloadUrl = zipElem.GetString() ?? "";
+                    var xmlContent = await atomResponse.Content.ReadAsStringAsync();
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(xmlContent);
+
+                    var nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+                    nsmgr.AddNamespace("atom", "http://www.w3.org/2005/Atom");
+
+                    var entryNode = xmlDoc.SelectSingleNode("//atom:entry", nsmgr);
+                    if (entryNode != null)
+                    {
+                        var idNode = entryNode.SelectSingleNode("atom:id", nsmgr);
+                        var titleNode = entryNode.SelectSingleNode("atom:title", nsmgr);
+                        var contentNode = entryNode.SelectSingleNode("atom:content", nsmgr);
+
+                        string idText = idNode?.InnerText ?? "";
+                        string rawTag = idText.Contains("/") ? idText.Substring(idText.LastIndexOf('/') + 1) : "";
+                        string cleanVersion = rawTag.TrimStart('v', 'V');
+                        string releaseNotes = contentNode?.InnerText ?? titleNode?.InnerText ?? "";
+                        
+                        // تنظيف وسوم الـ HTML للحصول على نص ملخص التحديث الصافي
+                        releaseNotes = Regex.Replace(releaseNotes, "<.*?>", string.Empty).Trim();
+
+                        string downloadUrl = $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{rawTag}/RetailApp_Setup.exe";
+
+                        return new UpdateInfo
+                        {
+                            Version = cleanVersion,
+                            BuildNumber = cleanVersion,
+                            ReleaseDate = DateTime.Now,
+                            ReleaseNotes = releaseNotes,
+                            DownloadUrl = downloadUrl,
+                            IsMandatory = false
+                        };
+                    }
                 }
 
-                return new UpdateInfo
-                {
-                    Version = cleanVersion,
-                    BuildNumber = cleanVersion,
-                    ReleaseDate = releaseDate,
-                    ReleaseNotes = releaseNotes,
-                    DownloadUrl = downloadUrl,
-                    IsMandatory = false
-                };
+                return null;
             }
             catch
             {
@@ -133,7 +175,6 @@ namespace RetailApp.Services
 
                 if (extension == ".exe")
                 {
-                    // تشغيل ملف التثبيت المباشر دون توجيه لأي متصفح
                     Process.Start(new ProcessStartInfo
                     {
                         FileName = tempPath,
@@ -145,7 +186,6 @@ namespace RetailApp.Services
                 }
                 else
                 {
-                    // فتح مجلد الملف المحمل للمستخدم تلقائياً
                     Process.Start(new ProcessStartInfo
                     {
                         FileName = "explorer.exe",
