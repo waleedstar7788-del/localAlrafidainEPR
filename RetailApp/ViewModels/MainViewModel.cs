@@ -71,11 +71,23 @@ namespace RetailApp.ViewModels
                     var versionService = _serviceProvider.GetService(typeof(IVersionService)) as IVersionService;
                     string currentVersion = versionService?.GetCurrentVersion() ?? "1.0.0";
 
-                    if (update != null && update.Version != currentVersion)
+                    if (update != null)
                     {
-                        AvailableUpdateInfo = update;
-                        UpdateNotificationText = $"يتوفر تحديث جديد للبرنامج الإصدار ({update.Version})! اضغط هنا للاطلاع على الإضافات والتحديث المباشر.";
-                        HasAvailableUpdate = true;
+                        if (Version.TryParse(update.Version, out var newVer) && Version.TryParse(currentVersion, out var curVer))
+                        {
+                            if (newVer > curVer)
+                            {
+                                AvailableUpdateInfo = update;
+                                UpdateNotificationText = $"يتوفر تحديث جديد للبرنامج الإصدار ({update.Version})! اضغط هنا للاطلاع على الإضافات والتحديث المباشر.";
+                                HasAvailableUpdate = true;
+                            }
+                        }
+                        else if (update.Version != currentVersion)
+                        {
+                            AvailableUpdateInfo = update;
+                            UpdateNotificationText = $"يتوفر تحديث جديد للبرنامج الإصدار ({update.Version})! اضغط هنا للاطلاع على الإضافات والتحديث المباشر.";
+                            HasAvailableUpdate = true;
+                        }
                     }
                 }
             }
