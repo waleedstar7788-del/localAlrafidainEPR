@@ -1,0 +1,73 @@
+<UserControl x:Class="RetailApp.Views.Settings.SecuritySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <StackPanel MaxWidth="800" HorizontalAlignment="Left">
+        <TextBlock Text="إعدادات الأمان وحماية النظام" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,32"/>
+        
+        <!-- Password Policy Level -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="مستوى أمان كلمة المرور" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="يحدد مدى تعقيد كلمات المرور المطلوبة للمستخدمين الجدد" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ComboBox Grid.Column="1" SelectedItem="{Binding DbSettings.PasswordPolicyLevel, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernComboBox}" Width="200" VerticalAlignment="Center" FontSize="15">
+                    <sys:String>Low</sys:String>
+                    <sys:String>Medium</sys:String>
+                    <sys:String>High</sys:String>
+                </ComboBox>
+            </Grid>
+        </Border>
+        
+        <!-- Max Login Attempts -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="الحد الأقصى لمحاولات تسجيل الدخول" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="يتم قفل الحساب مؤقتاً بعد تجاوز هذا العدد من المحاولات الخاطئة" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Text="{Binding DbSettings.MaxLoginAttempts, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" Width="150" VerticalAlignment="Center" FontSize="15" TextAlignment="Center"/>
+            </Grid>
+        </Border>
+        
+        <!-- Session Timeout -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="مدة مهلة الجلسة (بالدقائق)" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="المدة الزمنية التي يبقى فيها المستخدم مسجلاً للدخول دون تفاعل" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Text="{Binding DbSettings.SessionTimeoutMinutes, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" Width="150" VerticalAlignment="Center" FontSize="15" TextAlignment="Center"/>
+            </Grid>
+        </Border>
+        
+        <!-- Auto Logout Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="تسجيل الخروج التلقائي عند الخمول" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="يقوم النظام بتسجيل الخروج تلقائياً بعد انتهاء مهلة الجلسة" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding DbSettings.AutoLogoutEnabled, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="50" Height="28" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </StackPanel>
+</UserControl>

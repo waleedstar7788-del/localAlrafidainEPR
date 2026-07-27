@@ -1,0 +1,70 @@
+<UserControl x:Class="RetailApp.Views.Settings.InventorySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <StackPanel MaxWidth="800" HorizontalAlignment="Left">
+        <TextBlock Text="إعدادات المخزون والأصناف" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,32"/>
+        
+        <!-- Low Stock Threshold Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="حد تنبيه النواقص" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="الكمية التي سيقوم النظام بإرسال تنبيه عندها لاقتراب نفاذ المنتج." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Text="{Binding DbSettings.LowStockThreshold, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" Width="150" VerticalAlignment="Center" FontSize="15" TextAlignment="Center" materialDesign:HintAssist.Hint="الكمية"/>
+            </Grid>
+        </Border>
+
+        <!-- Allow Negative Stock Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="السماح ببيع كميات بالسالب (أقل من الصفر)" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="السماح للكاشير ببيع منتجات حتى لو كانت كميتها في النظام صفراً." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding DbSettings.AllowNegativeStock, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="50" Height="28" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Auto Generate SKU Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="توليد رقم الصنف (SKU) تلقائياً" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="يقوم النظام بإنشاء رمز تعريفي مميز لكل منتج جديد تتم إضافته." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding DbSettings.AutoGenerateSKU, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="50" Height="28" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Auto Generate Barcode Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="توليد الباركود تلقائياً للأصناف الجديدة" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="إذا لم يكن للمنتج باركود، سيقوم النظام بإنشاء باركود جديد له." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding DbSettings.AutoGenerateBarcode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="50" Height="28" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+    </StackPanel>
+</UserControl>

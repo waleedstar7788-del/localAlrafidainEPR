@@ -1,0 +1,124 @@
+<UserControl x:Class="RetailApp.Views.BackupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:models="clr-namespace:RetailApp.Models"
+             FlowDirection="RightToLeft">
+             
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="إدارة النسخ الاحتياطي والاستعادة" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="مركز التحكم للحفاظ على أمان بيانات المؤسسة والنسخ الاحتياطي المجدول" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Column: Actions and Settings -->
+            <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                
+                <!-- Quick Actions Card -->
+                <Border Style="{StaticResource KpiCard}" Padding="24" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="العمليات السريعة" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+                        
+                        <Button Style="{StaticResource ModernPrimaryButton}" 
+                                Command="{Binding CreateBackupCommand}" 
+                                Height="48" Margin="0,0,0,12">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CloudUploadOutline" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="إنشاء نسخة احتياطية الآن" FontSize="16"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Progress Section -->
+                        <StackPanel Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,12,0,0">
+                            <TextBlock Text="{Binding ProgressText}" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8"/>
+                            <ProgressBar IsIndeterminate="True" Height="4" Margin="0,0,0,12" Foreground="{DynamicResource BrandPrimaryBrush}"/>
+                            <Button Style="{StaticResource ModernDangerButton}" Command="{Binding CancelCommand}" Content="إلغاء العملية" Height="36"/>
+                        </StackPanel>
+
+                        <!-- Status Message -->
+                        <TextBlock Text="{Binding StatusMessage}" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource BrandPrimaryBrush}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Scheduler Config Card -->
+                <Border Style="{StaticResource KpiCard}" Padding="24">
+                    <StackPanel>
+                        <TextBlock Text="إعدادات النسخ التلقائي" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+                        
+                        <TextBlock Text="تكرار النسخ الاحتياطي:" Margin="0,0,0,8" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <ComboBox SelectedItem="{Binding ScheduleConfig.Frequency}" Margin="0,0,0,16" 
+                                  Style="{StaticResource ModernComboBox}"
+                                  materialDesign:HintAssist.Hint="اختر التكرار">
+                            <models:BackupFrequency>None</models:BackupFrequency>
+                            <models:BackupFrequency>Daily</models:BackupFrequency>
+                            <models:BackupFrequency>Weekly</models:BackupFrequency>
+                            <models:BackupFrequency>Monthly</models:BackupFrequency>
+                            <models:BackupFrequency>OnStartup</models:BackupFrequency>
+                            <models:BackupFrequency>OnExit</models:BackupFrequency>
+                        </ComboBox>
+
+                        <TextBlock Text="الحد الأقصى للنسخ المحتفظ بها:" Margin="0,0,0,8" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBox Text="{Binding ScheduleConfig.MaxRetainedBackups}" 
+                                 Style="{StaticResource ModernTextBox}" Margin="0,0,0,24"/>
+
+                        <Button Style="{StaticResource ModernSecondaryButton}" 
+                                Command="{Binding SaveSettingsCommand}" 
+                                Content="حفظ الإعدادات" Height="40"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Right Column: Backup History -->
+            <Border Grid.Column="1" Style="{StaticResource KpiCard}" Padding="24" Margin="12,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="سجل النسخ الاحتياطي" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding BackupHistory}" 
+                              AutoGenerateColumns="False" CanUserAddRows="False" 
+                              IsReadOnly="True" HeadersVisibility="Column"
+                              Background="Transparent" RowBackground="Transparent"
+                              AlternatingRowBackground="{DynamicResource SurfaceHighlightBrush}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="التاريخ والوقت" Binding="{Binding Date, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="*"/>
+                            <DataGridTextColumn Header="النوع" Binding="{Binding BackupType}" Width="*"/>
+                            <DataGridTextColumn Header="المستخدم" Binding="{Binding User}" Width="*"/>
+                            <DataGridTextColumn Header="الحجم (بايت)" Binding="{Binding SizeBytes}" Width="*"/>
+                            <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="*"/>
+                            <DataGridTemplateColumn Header="إجراءات" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                                ToolTip="استعادة هذه النسخة"
+                                                Command="{Binding DataContext.RestoreBackupCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                CommandParameter="{Binding}">
+                                            <materialDesign:PackIcon Kind="Restore" Width="18" Height="18" Foreground="{DynamicResource DangerBrush}"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

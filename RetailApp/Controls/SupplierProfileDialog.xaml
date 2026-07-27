@@ -1,0 +1,121 @@
+<UserControl x:Class="RetailApp.Controls.SupplierProfileDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Width="850" Height="650" Background="Transparent">
+             
+    <Border Style="{StaticResource DialogContainer}">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ═══ HEADER ═══ -->
+            <Grid Grid.Row="0" Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Width="64" Height="64" CornerRadius="32" Background="{DynamicResource BrandInfoTransparentBrush}" Margin="0,0,16,0">
+                    <materialDesign:PackIcon Kind="Factory" Foreground="{DynamicResource BrandPrimaryBrush}" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Supplier.SupplierName}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="{Binding Supplier.SupplierNumber, StringFormat=رقم المورد: {0}}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,4,0,0"/>
+                </StackPanel>
+                
+                <Button Grid.Column="2" Style="{StaticResource ModernIconButton}" VerticalAlignment="Top"
+                        Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                    <materialDesign:PackIcon Kind="Close" Width="20" Height="20"/>
+                </Button>
+            </Grid>
+
+            <!-- ═══ CONTENT ═══ -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left Column (Financials & History) -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="الملخص المالي" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+                        
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Style="{StaticResource KpiCard}" BorderBrush="{DynamicResource BrandPrimaryBrush}" BorderThickness="0,0,0,2">
+                                <StackPanel>
+                                    <TextBlock Text="إجمالي المشتريات" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                                    <TextBlock Text="{Binding Supplier.TotalPurchases, StringFormat={}{0:N2}}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource BrandPrimaryBrush}"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="2" Style="{StaticResource KpiCard}" BorderBrush="{DynamicResource BrandDangerBrush}" BorderThickness="0,0,0,2">
+                                <StackPanel>
+                                    <TextBlock Text="المبلغ المستحق (الديون)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                                    <TextBlock Text="{Binding Supplier.OutstandingAmount, StringFormat={}{0:N2}}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource BrandDangerBrush}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <TextBlock Text="سجل المشتريات" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+                        
+                        <Border Style="{StaticResource KpiCard}" MinHeight="200" HorizontalAlignment="Stretch">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="History" Width="40" Height="40" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                                <TextBlock Text="لا توجد عمليات مسجلة بعد" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14" HorizontalAlignment="Center"/>
+                                <TextBlock Text="سيتم ربط هذه الواجهة بنظام المشتريات قريباً" Foreground="{DynamicResource TextMutedBrush}" FontSize="12" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Right Column (General Info) -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="المعلومات الأساسية" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+                        
+                        <Border Style="{StaticResource KpiCard}" Padding="20">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,16">
+                                    <TextBlock Text="الشركة" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13"/>
+                                    <TextBlock Text="{Binding Supplier.CompanyName, TargetNullValue='-'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium" HorizontalAlignment="Left" Margin="80,0,0,0"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,16">
+                                    <TextBlock Text="الهاتف" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13"/>
+                                    <TextBlock Text="{Binding Supplier.Phone1, TargetNullValue='-'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium" HorizontalAlignment="Left" Margin="80,0,0,0"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,16">
+                                    <TextBlock Text="البريد" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13"/>
+                                    <TextBlock Text="{Binding Supplier.Email, TargetNullValue='-'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium" HorizontalAlignment="Left" Margin="80,0,0,0"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,16">
+                                    <TextBlock Text="الضريبي" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13"/>
+                                    <TextBlock Text="{Binding Supplier.TaxNumber, TargetNullValue='-'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium" HorizontalAlignment="Left" Margin="80,0,0,0"/>
+                                </Grid>
+                                <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,16"/>
+                                <Grid Margin="0,0,0,16">
+                                    <TextBlock Text="البنك" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13"/>
+                                    <TextBlock Text="{Binding Supplier.BankName, TargetNullValue='-'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium" HorizontalAlignment="Left" Margin="80,0,0,0"/>
+                                </Grid>
+                                <Grid>
+                                    <TextBlock Text="IBAN" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13"/>
+                                    <TextBlock Text="{Binding Supplier.IBAN, TargetNullValue='-'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium" HorizontalAlignment="Left" Margin="80,0,0,0" TextWrapping="Wrap"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,58 @@
+<UserControl x:Class="RetailApp.Controls.IncomeEditorDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="Transparent"
+             Width="600" Height="600"
+             Loaded="UserControl_Loaded">
+
+    <Border Style="{StaticResource DialogContainer}">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,24">
+                <materialDesign:PackIcon Kind="PlusCircleOutline" Foreground="{DynamicResource BrandSuccessBrush}" Width="28" Height="28" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <TextBlock Text="إضافة إيراد جديد" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Form Content -->
+            <StackPanel Grid.Row="1">
+                <TextBox materialDesign:HintAssist.Hint="عنوان الإيراد (مثال: إيراد صيانة)" Style="{StaticResource ModernTextBox}" Text="{Binding Title}" Margin="0,0,0,16"/>
+
+                <ComboBox materialDesign:HintAssist.Hint="حساب الإيراد (الفئة)" ItemsSource="{Binding RevenueAccounts}" SelectedItem="{Binding SelectedAccount}" 
+                          DisplayMemberPath="Name" Style="{StaticResource ModernComboBox}" Margin="0,0,0,16"/>
+
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" materialDesign:HintAssist.Hint="المبلغ" Style="{StaticResource ModernTextBox}" 
+                             Text="{Binding Amount, StringFormat={}{0:N2}}" Foreground="{DynamicResource BrandSuccessBrush}" FontWeight="Bold" FontSize="16"/>
+                    
+                    <ComboBox Grid.Column="2" materialDesign:HintAssist.Hint="طريقة الاستلام" ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding PaymentMethod}" 
+                              Style="{StaticResource ModernComboBox}"/>
+                </Grid>
+
+                <TextBox materialDesign:HintAssist.Hint="الرقم المرجعي (رقم إيصال الاستلام)" Style="{StaticResource ModernTextBox}" Text="{Binding ReferenceNumber}" Margin="0,0,0,16"/>
+
+                <TextBox materialDesign:HintAssist.Hint="ملاحظات وتفاصيل إضافية" Style="{StaticResource ModernTextBox}" Text="{Binding Description}" 
+                         TextWrapping="Wrap" AcceptsReturn="True" Height="100" VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>
+
+            <!-- Actions -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,24,0,0">
+                <Button Content="حفظ الإيراد" Command="{Binding SaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernSuccessButton}" Width="140" Height="44" Margin="0,0,12,0"/>
+                <Button Content="إلغاء" Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernSecondaryButton}" Width="100" Height="44"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,53 @@
+<UserControl x:Class="RetailApp.Views.Settings.NotificationsSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <StackPanel MaxWidth="800" HorizontalAlignment="Left">
+        <TextBlock Text="إعدادات الإشعارات والتنبيهات" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,32"/>
+        
+        <!-- Desktop Notifications Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="إشعارات سطح المكتب" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="تفعيل إظهار الإشعارات المنبثقة أسفل الشاشة للعمليات المهمة." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding LocalSettings.EnableDesktopNotifications, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="50" Height="28" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+        
+        <!-- Warning Messages Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="رسائل التحذير والموافقة" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="تفعيل النوافذ التحذيرية التي تتطلب موافقتك قبل الحذف أو التعديل." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding LocalSettings.EnableWarningMessages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="50" Height="28" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+        
+        <!-- Sound Effects Option -->
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="المؤثرات الصوتية للإشعارات" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="تشغيل أصوات تنبيهية قصيرة عند نجاح أو فشل العمليات." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding LocalSettings.EnableSoundEffects, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="50" Height="28" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </StackPanel>
+</UserControl>

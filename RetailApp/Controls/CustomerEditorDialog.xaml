@@ -1,0 +1,89 @@
+<UserControl x:Class="RetailApp.Controls.CustomerEditorDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:conv="clr-namespace:RetailApp.Converters"
+             Width="650" Height="550" Background="Transparent">
+    <UserControl.Resources>
+        <conv:BooleanToTitleConverter x:Key="BooleanToTitleConverter"/>
+    </UserControl.Resources>
+    
+    <Border Style="{StaticResource DialogContainer}">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <TextBlock Grid.Row="0" Text="{Binding IsNew, Converter={StaticResource BooleanToTitleConverter}}" 
+                       FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,24"/>
+
+            <!-- Form Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,24" Padding="0,0,8,0">
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBox Grid.Column="0" Text="{Binding EditingCustomer.FullName, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="الاسم الكامل *" 
+                                 Style="{StaticResource ModernTextBox}"/>
+                                 
+                        <TextBox Grid.Column="2" Text="{Binding EditingCustomer.CompanyName, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="اسم الشركة" 
+                                 Style="{StaticResource ModernTextBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBox Grid.Column="0" Text="{Binding EditingCustomer.Phone1, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="رقم الهاتف الأساسي *" 
+                                 Style="{StaticResource ModernTextBox}"/>
+                                 
+                        <TextBox Grid.Column="2" Text="{Binding EditingCustomer.Email, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="البريد الإلكتروني" 
+                                 Style="{StaticResource ModernTextBox}"/>
+                    </Grid>
+
+                    <TextBox Text="{Binding EditingCustomer.Address, UpdateSourceTrigger=PropertyChanged}"
+                             materialDesign:HintAssist.Hint="العنوان التفصيلي" 
+                             Style="{StaticResource ModernTextBox}" Margin="0,0,0,16"/>
+
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBox Grid.Column="0" Text="{Binding EditingCustomer.CreditLimit, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="الحد الائتماني (أجل)" 
+                                 Style="{StaticResource ModernTextBox}"/>
+                                 
+                        <TextBox Grid.Column="2" Text="{Binding EditingCustomer.TaxNumber, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="الرقم الضريبي" 
+                                 Style="{StaticResource ModernTextBox}"/>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Actions -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left"> <!-- RTL left is visual right -->
+                <Button Content="حفظ العميل" Command="{Binding SaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernPrimaryButton}" Width="140" Height="44" Margin="0,0,12,0"/>
+                <Button Content="إلغاء" Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernSecondaryButton}" Width="100" Height="44"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

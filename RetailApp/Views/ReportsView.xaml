@@ -1,0 +1,131 @@
+<UserControl x:Class="RetailApp.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- Header -->
+            <RowDefinition Height="Auto"/>  <!-- KPI Cards -->
+            <RowDefinition Height="*"/>     <!-- Charts -->
+        </Grid.RowDefinitions>
+
+        <!-- ═══ PAGE HEADER ═══ -->
+        <Grid Grid.Row="0" Margin="0,0,0,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="التقارير وذكاء الأعمال (BI)" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="تحليلات الأداء المالي، المبيعات، والتقارير الشاملة للنظام" FontSize="13" 
+                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Command="{Binding ExportPdfCommand}" Style="{StaticResource ModernDangerButton}" Padding="16,8" Height="40" Margin="0,0,12,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FilePdfBox" Margin="0,0,8,0" Width="18" Height="18"/>
+                        <TextBlock Text="تصدير PDF" FontSize="13"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding ExportExcelCommand}" Style="{StaticResource ModernSuccessButton}" Padding="16,8" Height="40">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileExcelBox" Margin="0,0,8,0" Width="18" Height="18"/>
+                        <TextBlock Text="تصدير Excel" FontSize="13"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══ KPI CARDS ROW ═══ -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sales KPI -->
+            <Border Grid.Column="0" Style="{StaticResource KpiCard}" BorderBrush="{DynamicResource BrandPrimaryBrush}" BorderThickness="0,0,0,2">
+                <StackPanel>
+                    <TextBlock Text="مبيعات الشهر الحالي" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding TotalSalesMonth, StringFormat={}{0:N2}}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Profit KPI -->
+            <Border Grid.Column="2" Style="{StaticResource KpiCard}" BorderBrush="{DynamicResource BrandSuccessBrush}" BorderThickness="0,0,0,2">
+                <StackPanel>
+                    <TextBlock Text="أرباح الشهر التقديرية" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding TotalProfitMonth, StringFormat={}{0:N2}}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandSuccessBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Inventory Value KPI -->
+            <Border Grid.Column="4" Style="{StaticResource KpiCard}" BorderBrush="{DynamicResource BrandInfoBrush}" BorderThickness="0,0,0,2">
+                <StackPanel>
+                    <TextBlock Text="قيمة المخزون الإجمالية" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding InventoryValuation, StringFormat={}{0:N2}}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandInfoBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Net Financials KPI -->
+            <Border Grid.Column="6" Style="{StaticResource KpiCard}" BorderBrush="{DynamicResource BrandWarningBrush}" BorderThickness="0,0,0,2">
+                <StackPanel>
+                    <TextBlock Text="الصافي المالي" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding NetFinancials, StringFormat={}{0:N2}}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandWarningBrush}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ═══ CHARTS AREA ═══ -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sales Trend Line Chart -->
+            <Border Grid.Column="0" Style="{StaticResource KpiCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <materialDesign:PackIcon Kind="ChartTimelineVariant" Foreground="{DynamicResource BrandPrimaryBrush}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="مؤشر المبيعات (آخر 7 أيام)" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <lvc:CartesianChart Grid.Row="1" Series="{Binding SalesTrendSeries}" XAxes="{Binding SalesTrendXAxes}" YAxes="{Binding SalesTrendYAxes}" TooltipPosition="Top" Margin="0,10,0,0"/>
+                </Grid>
+            </Border>
+
+            <!-- Top Products Pie Chart -->
+            <Border Grid.Column="2" Style="{StaticResource KpiCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <materialDesign:PackIcon Kind="ChartDonut" Foreground="{DynamicResource BrandWarningBrush}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="المنتجات الأكثر مبيعاً" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <lvc:PieChart Grid.Row="1" Series="{Binding TopProductsSeries}" LegendPosition="Bottom" TooltipPosition="Top"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

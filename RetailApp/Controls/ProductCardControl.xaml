@@ -1,0 +1,42 @@
+<UserControl x:Class="RetailApp.Controls.Pos.ProductCardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="Transparent">
+             
+    <Button Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" 
+            Height="Auto" Padding="0" Margin="6" Background="Transparent" BorderThickness="0"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            
+        <Border Background="{DynamicResource BgCardBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Width="160" Height="220" ClipToBounds="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="130"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Placeholder Image Area -->
+                <Border Grid.Row="0" Background="{DynamicResource SurfaceHighlightBrush}">
+                    <materialDesign:PackIcon Kind="PackageVariantClosed" Width="56" Height="56" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextMutedBrush}"/>
+                </Border>
+                
+                <!-- Favorite Badge -->
+                <Border Grid.Row="0" Background="{DynamicResource BrandDangerBrush}" CornerRadius="12" Padding="4" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8"
+                        Visibility="{Binding IsFavorite, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <materialDesign:PackIcon Kind="Heart" Foreground="White" Width="14" Height="14"/>
+                </Border>
+                
+                <!-- Content Area -->
+                <StackPanel Grid.Row="1" Margin="12,8">
+                    <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap" MaxHeight="38" TextTrimming="CharacterEllipsis"/>
+                    <Grid Margin="0,8,0,0">
+                        <TextBlock Text="{Binding Price, StringFormat='c'}" FontSize="15" Foreground="{DynamicResource BrandPrimaryBrush}" FontWeight="Bold"/>
+                        <Border Background="{DynamicResource SurfaceHighlightStrongBrush}" CornerRadius="8" Padding="6,2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <TextBlock Text="{Binding StockQuantity, StringFormat='{}المخزون: {0}'}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Medium"/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Button>
+</UserControl>

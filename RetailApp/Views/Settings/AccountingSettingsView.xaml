@@ -1,0 +1,69 @@
+<UserControl x:Class="RetailApp.Views.Settings.AccountingSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <StackPanel MaxWidth="800" HorizontalAlignment="Left">
+        <TextBlock Text="إعدادات الحسابات والمالية" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,32"/>
+        
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="نسبة الضريبة الافتراضية (٪)" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="نسبة ضريبة القيمة المضافة التي ستطبق تلقائياً على الفواتير." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Text="{Binding DbSettings.Tax, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" Width="150" VerticalAlignment="Center" FontSize="15" TextAlignment="Center" materialDesign:HintAssist.Hint="0.00"/>
+            </Grid>
+        </Border>
+
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="السنة المالية الحالية" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="حدد السنة المالية للتقارير الختامية والجرد." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Text="{Binding DbSettings.FiscalYear, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" Width="150" VerticalAlignment="Center" FontSize="15" TextAlignment="Center" materialDesign:HintAssist.Hint="2024"/>
+            </Grid>
+        </Border>
+
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="العملة الافتراضية" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="الرمز أو اسم العملة التي ستظهر بجانب المبالغ النقدية." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Text="{Binding DbSettings.Currency, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" Width="150" VerticalAlignment="Center" FontSize="15" TextAlignment="Center" materialDesign:HintAssist.Hint="د.ع / $ / SAR"/>
+            </Grid>
+        </Border>
+
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <TextBlock Text="طريقة الدفع الافتراضية" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="الطريقة التي سيتم اختيارها تلقائياً عند الدفع السريع." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <ComboBox Grid.Column="1" SelectedItem="{Binding DbSettings.DefaultPaymentMethod, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernComboBox}" Width="150" VerticalAlignment="Center" FontSize="15">
+                    <sys:String>Cash</sys:String>
+                    <sys:String>Card</sys:String>
+                    <sys:String>Bank Transfer</sys:String>
+                </ComboBox>
+            </Grid>
+        </Border>
+    </StackPanel>
+</UserControl>

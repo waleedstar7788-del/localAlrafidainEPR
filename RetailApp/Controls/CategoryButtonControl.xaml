@@ -1,0 +1,15 @@
+<UserControl x:Class="RetailApp.Controls.Pos.CategoryButtonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="Transparent">
+    
+    <Button Style="{StaticResource ModernSecondaryButton}" Height="40" Margin="4,0,4,0" Padding="16,0"
+            Command="{Binding DataContext.FilterByCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+            CommandParameter="{Binding Name}">
+        <StackPanel Orientation="Horizontal">
+            <materialDesign:PackIcon Kind="{Binding Icon}" Margin="0,0,8,0" Width="18" Height="18" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Name}" FontWeight="Medium" FontSize="14" VerticalAlignment="Center"/>
+        </StackPanel>
+    </Button>
+</UserControl>

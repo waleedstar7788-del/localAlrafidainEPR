@@ -1,0 +1,97 @@
+<UserControl x:Class="RetailApp.Controls.InstallmentContractDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:RetailApp.Models"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             Background="Transparent"
+             Width="850" Height="700">
+
+    <Border Style="{StaticResource DialogContainer}">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,24">
+                <materialDesign:PackIcon Kind="FileDocumentEditOutline" Foreground="{DynamicResource BrandPrimaryBrush}" Width="28" Height="28" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <TextBlock Text="عقد أقساط جديد" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Form -->
+            <Grid Grid.Row="1" Margin="0,0,0,24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Row="0" Grid.Column="0" materialDesign:HintAssist.Hint="معرف العميل (Customer ID)" Style="{StaticResource ModernTextBox}" Text="{Binding CustomerId}" Margin="0,0,0,16"/>
+                <TextBox Grid.Row="0" Grid.Column="2" materialDesign:HintAssist.Hint="الإجمالي (قيمة المديونية الأصلية)" Style="{StaticResource ModernTextBox}" Text="{Binding TotalAmount}" Margin="0,0,0,16"/>
+
+                <TextBox Grid.Row="1" Grid.Column="0" materialDesign:HintAssist.Hint="المقدمة (Down Payment)" Style="{StaticResource ModernTextBox}" Text="{Binding DownPayment}" Margin="0,0,0,16"/>
+                <TextBox Grid.Row="1" Grid.Column="2" materialDesign:HintAssist.Hint="عدد الأقساط" Style="{StaticResource ModernTextBox}" Text="{Binding NumberOfInstallments}" Margin="0,0,0,16"/>
+
+                <ComboBox Grid.Row="2" Grid.Column="0" materialDesign:HintAssist.Hint="نوع القسط" Style="{StaticResource ModernComboBox}" SelectedItem="{Binding InstallmentType}" Margin="0,0,0,16">
+                    <ComboBoxItem Content="Monthly" IsSelected="True"/>
+                    <ComboBoxItem Content="Weekly"/>
+                    <ComboBoxItem Content="Daily"/>
+                </ComboBox>
+                
+                <Button Grid.Row="2" Grid.Column="2" Command="{Binding PreviewScheduleCommand}" Style="{StaticResource ModernSecondaryButton}" Margin="0,0,0,16" Height="48">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="TableEye" Margin="0,0,8,0" Width="18" Height="18"/>
+                        <TextBlock Text="معاينة الجدول الزمني" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <!-- Preview Grid -->
+            <Border Grid.Row="2" Style="{StaticResource KpiCard}" Padding="0" ClipToBounds="True" Margin="0,0,0,24">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Border Grid.Row="0" Padding="16,12" Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="الجدول الزمني المبدئي" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" FontWeight="SemiBold"/>
+                    </Border>
+                    
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding PreviewSchedules}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                              Style="{StaticResource ModernDataGrid}" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="رقم القسط" Binding="{Binding InstallmentNumber}" Width="100"/>
+                            <DataGridTextColumn Header="تاريخ الاستحقاق" Binding="{Binding DueDate, StringFormat={}{0:yyyy-MM-dd}}" Width="2*"/>
+                            <DataGridTextColumn Header="المبلغ المستحق" Binding="{Binding Amount, StringFormat={}{0:N2}}" Width="1*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource BrandDangerBrush}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- Actions -->
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="حفظ واعتماد العقد" Command="{Binding SaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernSuccessButton}" Width="160" Height="44" Margin="0,0,12,0"/>
+                <Button Content="إلغاء" Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernSecondaryButton}" Width="100" Height="44"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

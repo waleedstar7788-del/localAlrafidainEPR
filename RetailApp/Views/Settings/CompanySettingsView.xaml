@@ -1,0 +1,37 @@
+<UserControl x:Class="RetailApp.Views.Settings.CompanySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <StackPanel MaxWidth="1000" HorizontalAlignment="Left">
+        <TextBlock Text="إعدادات ومعلومات الشركة" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,32"/>
+        
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="32">
+            <StackPanel>
+                <TextBlock Text="البيانات الأساسية للمؤسسة" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8"/>
+                <TextBlock Text="ستظهر هذه المعلومات في أعلى الفواتير والتقارير المطبوعة." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,24"/>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="32"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0">
+                        <TextBox materialDesign:HintAssist.Hint="الاسم باللغة العربية" Text="{Binding DbSettings.ArabicName, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                        <TextBox materialDesign:HintAssist.Hint="رقم الهاتف الأساسي" Text="{Binding DbSettings.Phone, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                        <TextBox materialDesign:HintAssist.Hint="الرقم الضريبي (VAT)" Text="{Binding DbSettings.TaxNumber, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                        <TextBox materialDesign:HintAssist.Hint="الدولة" Text="{Binding DbSettings.Country, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2">
+                        <TextBox materialDesign:HintAssist.Hint="الاسم باللغة الإنجليزية" Text="{Binding DbSettings.EnglishName, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                        <TextBox materialDesign:HintAssist.Hint="البريد الإلكتروني" Text="{Binding DbSettings.Email, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                        <TextBox materialDesign:HintAssist.Hint="رقم السجل التجاري (CR)" Text="{Binding DbSettings.CommercialRegistration, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                        <TextBox materialDesign:HintAssist.Hint="المدينة" Text="{Binding DbSettings.City, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource ModernTextBox}" FontSize="15" Margin="0,0,0,24"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

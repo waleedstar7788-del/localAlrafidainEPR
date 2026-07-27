@@ -1,0 +1,125 @@
+<UserControl x:Class="RetailApp.Controls.JournalEditorDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="Transparent"
+             Width="900" Height="750"
+             Loaded="UserControl_Loaded">
+
+    <Border Style="{StaticResource DialogContainer}">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,24">
+                <materialDesign:PackIcon Kind="BookEditOutline" Foreground="{DynamicResource BrandPrimaryBrush}" Width="28" Height="28" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <TextBlock Text="إضافة قيد يومية يدوي" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Header Information -->
+            <Grid Grid.Row="1" Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" materialDesign:HintAssist.Hint="الرقم المرجعي (Reference)" Style="{StaticResource ModernTextBox}" Text="{Binding ReferenceNumber}"/>
+                <TextBox Grid.Column="2" materialDesign:HintAssist.Hint="البيان (Description)" Style="{StaticResource ModernTextBox}" Text="{Binding Description}"/>
+            </Grid>
+
+            <!-- Lines -->
+            <Border Grid.Row="2" Style="{StaticResource KpiCard}" Padding="0" ClipToBounds="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Border Grid.Row="0" Background="{DynamicResource SurfaceHighlightBrush}" Margin="0" Padding="16,12">
+                        <Grid>
+                            <TextBlock Text="تفاصيل القيد المحاسبي" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <Button Command="{Binding AddLineCommand}" Style="{StaticResource ModernPrimaryButton}" Height="36" Padding="12,0" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Plus" Width="16" Height="16" Margin="0,0,6,0"/>
+                                    <TextBlock Text="إضافة سطر" FontSize="12"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding Lines}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                              Style="{StaticResource ModernDataGrid}">
+                        <DataGrid.Columns>
+                            <!-- Account Selection -->
+                            <DataGridTemplateColumn Header="الحساب" Width="2*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding DataContext.AvailableAccounts, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                  SelectedValue="{Binding AccountId, UpdateSourceTrigger=PropertyChanged}" 
+                                                  SelectedValuePath="Id" 
+                                                  DisplayMemberPath="Name" 
+                                                  Style="{StaticResource ModernComboBox}" Height="36"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="مدين (Debit)" Width="1*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding DebitAmount, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Padding="8,4" Height="36"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Header="دائن (Credit)" Width="1*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding CreditAmount, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Padding="8,4" Height="36"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <!-- Remove Line Button -->
+                            <DataGridTemplateColumn Header="" Width="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding DataContext.RemoveLineCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"
+                                                Style="{StaticResource ModernIconButton}" Width="32" Height="32" Foreground="{DynamicResource BrandDangerBrush}">
+                                            <materialDesign:PackIcon Kind="Delete" Width="16" Height="16"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- Totals -->
+            <Border Grid.Row="3" Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,24,0,24">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="إجمالي مدين:" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="{Binding TotalDebits, StringFormat={}{0:N2}}" Foreground="{DynamicResource BrandDangerBrush}" FontSize="20" FontWeight="Bold" Margin="0,0,40,0"/>
+                    
+                    <TextBlock Text="إجمالي دائن:" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="{Binding TotalCredits, StringFormat={}{0:N2}}" Foreground="{DynamicResource BrandSuccessBrush}" FontSize="20" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Actions -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="حفظ واعتماد القيد" Command="{Binding SaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernSuccessButton}" Width="160" Height="44" Margin="0,0,12,0"/>
+                <Button Content="إلغاء" Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        Style="{StaticResource ModernSecondaryButton}" Width="100" Height="44"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

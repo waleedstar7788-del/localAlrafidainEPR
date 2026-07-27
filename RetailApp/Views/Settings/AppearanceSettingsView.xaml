@@ -1,0 +1,62 @@
+<UserControl x:Class="RetailApp.Views.Settings.AppearanceSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <StackPanel MaxWidth="800" HorizontalAlignment="Left">
+        <TextBlock Text="تخصيص المظهر والثيمات" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,32"/>
+        
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20" Margin="0,0,0,24">
+            <StackPanel>
+                <TextBlock Text="وضع الإضاءة (Dark / Light)" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8"/>
+                <TextBlock Text="قم بتبديل مظهر النظام ليتناسب مع راحة عينيك وإضاءة البيئة المحيطة بك." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,24"/>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0" Command="{Binding ApplyThemeCommand}" CommandParameter="Dark" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Padding="0" Height="100" Style="{StaticResource MaterialDesignFlatButton}" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="WeatherNight" Width="32" Height="32" HorizontalAlignment="Center" Margin="0,0,0,8" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Text="مظلم (Dark)" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Column="2" Command="{Binding ApplyThemeCommand}" CommandParameter="Light" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Padding="0" Height="100" Style="{StaticResource MaterialDesignFlatButton}" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="WeatherSunny" Width="32" Height="32" HorizontalAlignment="Center" Margin="0,0,0,8" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Text="فاتح (Light)" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Column="4" Command="{Binding ApplyThemeCommand}" CommandParameter="System" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Padding="0" Height="100" Style="{StaticResource MaterialDesignFlatButton}" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Monitor" Width="32" Height="32" HorizontalAlignment="Center" Margin="0,0,0,8" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Text="تلقائي (System)" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Border Background="{DynamicResource SurfaceHighlightBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="24,20">
+            <StackPanel>
+                <TextBlock Text="اللون الأساسي للتطبيق (Accent Color)" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8"/>
+                <TextBlock Text="اختر اللون المفضل الذي سيطبق على الأزرار الأساسية والتحديدات في النظام." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,24"/>
+                
+                <StackPanel Orientation="Horizontal">
+                    <Button Background="#3B82F6" BorderThickness="0" Width="64" Height="64" Margin="0,0,16,0" Command="{Binding ApplyAccentColorCommand}" CommandParameter="#3B82F6" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Cursor="Hand"/>
+                    <Button Background="#10B981" BorderThickness="0" Width="64" Height="64" Margin="0,0,16,0" Command="{Binding ApplyAccentColorCommand}" CommandParameter="#10B981" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Cursor="Hand"/>
+                    <Button Background="#F59E0B" BorderThickness="0" Width="64" Height="64" Margin="0,0,16,0" Command="{Binding ApplyAccentColorCommand}" CommandParameter="#F59E0B" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Cursor="Hand"/>
+                    <Button Background="#EF4444" BorderThickness="0" Width="64" Height="64" Margin="0,0,16,0" Command="{Binding ApplyAccentColorCommand}" CommandParameter="#EF4444" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Cursor="Hand"/>
+                    <Button Background="#8B5CF6" BorderThickness="0" Width="64" Height="64" Margin="0,0,16,0" Command="{Binding ApplyAccentColorCommand}" CommandParameter="#8B5CF6" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Cursor="Hand"/>
+                    <Button Background="#EC4899" BorderThickness="0" Width="64" Height="64" Margin="0,0,16,0" Command="{Binding ApplyAccentColorCommand}" CommandParameter="#EC4899" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Cursor="Hand"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

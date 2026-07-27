@@ -1,0 +1,178 @@
+<UserControl x:Class="RetailApp.Controls.ProductEditorFormControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="Transparent">
+
+    <Border Style="{StaticResource DialogContainer}" Padding="32">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0" Margin="0,0,0,32">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="#102563EB" CornerRadius="12" Width="48" Height="48" Margin="0,0,16,0">
+                        <materialDesign:PackIcon Kind="PackageVariant" Foreground="{DynamicResource BrandPrimaryBrush}" Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="إضافة / تعديل منتج" FontWeight="Bold" FontSize="20" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="قم بتعبئة بيانات المنتج لإضافته إلى المخزون" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <Button Grid.Column="1" Command="{Binding CancelCommand}" Style="{StaticResource ModernIconButton}" Width="36" Height="36" Padding="0" VerticalAlignment="Top">
+                    <materialDesign:PackIcon Kind="Close" Width="20" Height="20"/>
+                </Button>
+            </Grid>
+
+            <!-- Form Body -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,32" Padding="0,0,16,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Right Column -->
+                    <StackPanel Grid.Column="0">
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="الاسم باللغة العربية *" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.ArabicName, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                                 
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="الاسم باللغة الإنجليزية" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                                 
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="الباركود *" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.Barcode, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="رمز المنتج (SKU)" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.SKU, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="الفئة *" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <ComboBox Style="{StaticResource ModernComboBox}" Text="{Binding EditingProduct.Category, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBoxItem Content="إلكترونيات"/>
+                                    <ComboBoxItem Content="أجهزة منزلية"/>
+                                    <ComboBoxItem Content="إكسسوارات"/>
+                                    <ComboBoxItem Content="ملابس"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="العلامة التجارية" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <ComboBox Style="{StaticResource ModernComboBox}" Text="{Binding EditingProduct.Brand, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBoxItem Content="Apple"/>
+                                    <ComboBoxItem Content="Samsung"/>
+                                    <ComboBoxItem Content="HP"/>
+                                    <ComboBoxItem Content="Dell"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Left Column -->
+                    <StackPanel Grid.Column="2">
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="سعر الشراء *" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.PurchasePrice, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="سعر البيع *" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.SellingPrice, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="سعر الجملة" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.WholesalePrice, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="الحد الأدنى للسعر" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.MinimumSellingPrice, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="الرصيد الحالي *" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.CurrentQuantity, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="حد إعادة الطلب" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.ReorderQuantity, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="الضريبة (%)" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding EditingProduct.TaxRate, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="وصف المنتج" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Height="80" TextWrapping="Wrap" AcceptsReturn="True"
+                                     Text="{Binding EditingProduct.Description, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                                 
+                        <StackPanel Margin="0,0,0,24">
+                            <CheckBox Content="المنتج نشط ومتاح للبيع" IsChecked="{Binding EditingProduct.IsActive, UpdateSourceTrigger=PropertyChanged}" 
+                                      Style="{StaticResource MaterialDesignCheckBox}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="14" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+
+            <!-- Footer Actions -->
+            <Border Grid.Row="2" Background="{DynamicResource BgCardBrush}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderBrush}" Padding="0,24,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="حفظ التغييرات" Command="{Binding SaveCommand}" Style="{StaticResource ModernPrimaryButton}" Width="160" Height="44" Margin="0,0,16,0"/>
+                    <Button Content="إلغاء" Command="{Binding CancelCommand}" Style="{StaticResource ModernSecondaryButton}" Width="120" Height="44"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

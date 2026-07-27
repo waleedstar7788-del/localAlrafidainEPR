@@ -1,0 +1,125 @@
+<UserControl x:Class="RetailApp.Views.PayrollView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- Header -->
+            <RowDefinition Height="Auto"/>  <!-- Actions -->
+            <RowDefinition Height="*"/>     <!-- DataGrid -->
+        </Grid.RowDefinitions>
+
+        <!-- ═══ PAGE HEADER ═══ -->
+        <Grid Grid.Row="0" Margin="0,0,0,24">
+            <StackPanel>
+                <TextBlock Text="مسير الرواتب (Payroll)" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="إدارة وحساب رواتب الموظفين، الخصومات، والبدلات الشهرية" FontSize="13" 
+                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══ ACTIONS BAR ═══ -->
+        <Grid Grid.Row="1" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Border Style="{StaticResource SearchBarBorder}" Width="300" Margin="0,0,12,0">
+                    <StackPanel Orientation="Horizontal" Margin="14,0">
+                        <materialDesign:PackIcon Kind="CalendarMonthOutline" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="اختر الشهر:" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox ItemsSource="{Binding Months}" SelectedItem="{Binding SelectedMonth}" 
+                                  Width="70" Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  BorderThickness="0" Background="Transparent" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource SearchBarBorder}" Width="200" Margin="0,0,12,0">
+                    <StackPanel Orientation="Horizontal" Margin="14,0">
+                        <TextBlock Text="اختر السنة:" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear}" 
+                                  Width="80" Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  BorderThickness="0" Background="Transparent" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <Button Command="{Binding LoadDataCommand}" Style="{StaticResource ModernSecondaryButton}" Padding="18,0" Height="40">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Refresh" Margin="0,0,8,0" Width="18" Height="18"/>
+                        <TextBlock Text="تحديث" FontSize="13"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <Button Grid.Column="1" Command="{Binding GeneratePayrollCommand}" Style="{StaticResource ModernPrimaryButton}" Padding="18,10" Height="40">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Calculator" Margin="0,0,8,0" Width="18" Height="18"/>
+                    <TextBlock Text="حساب مسير الرواتب للشهر الحالي" FontSize="13"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- ═══ DATA TABLE ═══ -->
+        <Border Grid.Row="2" Style="{StaticResource KpiCard}" Padding="0" ClipToBounds="True">
+            <DataGrid ItemsSource="{Binding Payrolls}" SelectedItem="{Binding SelectedPayroll}" AutoGenerateColumns="False" 
+                      IsReadOnly="True" Style="{StaticResource ModernDataGrid}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="الموظف" Width="2*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Background="{DynamicResource SurfaceHighlightStrongBrush}" CornerRadius="20" Width="32" Height="32" Margin="0,0,12,0">
+                                        <TextBlock Text="{Binding Employee.FullName[0]}" Foreground="{DynamicResource BrandPrimaryBrush}" 
+                                                   FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="{Binding Employee.FullName}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+                    <DataGridTextColumn Header="الراتب الأساسي" Binding="{Binding BaseSalary, StringFormat={}{0:N2}}" Width="1.2*"/>
+                    <DataGridTextColumn Header="البدلات" Binding="{Binding TotalAllowances, StringFormat={}{0:N2}}" Width="1*"/>
+                    <DataGridTextColumn Header="الخصومات والسلف" Binding="{Binding AdvanceDeduction, StringFormat={}{0:N2}}" Width="1.2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{DynamicResource BrandDangerBrush}"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="صافي الراتب" Binding="{Binding NetSalary, StringFormat={}{0:N2}}" Width="1.2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{DynamicResource BrandSuccessBrush}"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    
+                    <DataGridTemplateColumn Header="الحالة" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource BadgeInfo}">
+                                    <TextBlock Text="{Binding Status}" Foreground="{DynamicResource BrandInfoBrush}" FontWeight="SemiBold" FontSize="11"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="إجراءات" Width="140">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="دفع نقداً" 
+                                        Command="{Binding DataContext.PaySelectedSalaryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        Style="{StaticResource ModernSuccessButton}" Padding="12,0" Height="32" FontSize="12"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>

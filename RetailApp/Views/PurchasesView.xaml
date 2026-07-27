@@ -1,0 +1,143 @@
+<UserControl x:Class="RetailApp.Views.PurchasesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- Header -->
+            <RowDefinition Height="Auto"/>  <!-- Stats -->
+            <RowDefinition Height="Auto"/>  <!-- Search/Actions -->
+            <RowDefinition Height="*"/>     <!-- DataGrid -->
+        </Grid.RowDefinitions>
+
+        <!-- ═══ PAGE HEADER ═══ -->
+        <Grid Grid.Row="0" Margin="0,0,0,24">
+            <StackPanel>
+                <TextBlock Text="المشتريات" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="إدارة فواتير المشتريات المستلمة من الموردين" FontSize="13" 
+                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══ KPI STATS ROW ═══ -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0" Style="{StaticResource KpiCard}">
+                <StackPanel>
+                    <TextBlock Text="مشتريات اليوم" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding TodayPurchasesCount}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource KpiCard}">
+                <StackPanel>
+                    <TextBlock Text="قيمة مشتريات الشهر" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding MonthlyPurchasesValue, StringFormat={}{0:N2}}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandSuccessBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="4" Style="{StaticResource KpiCard}">
+                <StackPanel>
+                    <TextBlock Text="ديون مستحقة" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding OutstandingPurchasesValue, StringFormat={}{0:N2}}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandDangerBrush}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ═══ SEARCH & ACTIONS BAR ═══ -->
+        <Grid Grid.Row="2" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource SearchBarBorder}" HorizontalAlignment="Right" Width="400">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Kind="Magnify" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="14,0,10,0" Width="18" Height="18"/>
+                    <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                             materialDesign:HintAssist.Hint="ابحث برقم الفاتورة، اسم المورد..."
+                             materialDesign:HintAssist.Foreground="{DynamicResource TextMutedBrush}"
+                             materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                             Foreground="{DynamicResource TextPrimaryBrush}" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" FontSize="13"/>
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Style="{StaticResource ModernPrimaryButton}" Padding="18,10" Height="40" x:Name="AddPurchaseBtn" Command="{Binding AddPurchaseCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CartPlus" Margin="0,0,10,0" Width="18" Height="18"/>
+                        <TextBlock Text="فاتورة شراء جديدة" FontSize="13"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══ DATA TABLE ═══ -->
+        <Border Grid.Row="3" Style="{StaticResource KpiCard}" Padding="0" ClipToBounds="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid ItemsSource="{Binding Invoices}" AutoGenerateColumns="False" IsReadOnly="True"
+                          Style="{StaticResource ModernDataGrid}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="رقم الفاتورة" Binding="{Binding InvoiceNumber}" Width="120"/>
+                        <DataGridTextColumn Header="التاريخ" Binding="{Binding InvoiceDate, StringFormat={}{0:dd/MM/yyyy}}" Width="120"/>
+                        <DataGridTextColumn Header="المورد" Binding="{Binding Supplier.SupplierName}" Width="2*"/>
+                        <DataGridTextColumn Header="الإجمالي" Binding="{Binding TotalAmount, StringFormat={}{0:N2}}" Width="1.5*"/>
+                        <DataGridTextColumn Header="المدفوع" Binding="{Binding PaidAmount, StringFormat={}{0:N2}}" Width="1.5*"/>
+                        <DataGridTextColumn Header="الرصيد المتبقي" Binding="{Binding RemainingAmount, StringFormat={}{0:N2}}" Width="1.5*"/>
+                        
+                        <DataGridTemplateColumn Header="الحالة" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource BadgeInfo}">
+                                        <TextBlock Text="{Binding Status}" Foreground="{DynamicResource BrandInfoBrush}" FontWeight="SemiBold" FontSize="11"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="إجراءات" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Style="{StaticResource ModernIconButton}" Width="32" Height="32" ToolTip="عرض التفاصيل">
+                                            <materialDesign:PackIcon Kind="EyeOutline" Width="16" Height="16"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Pagination -->
+                <Border Grid.Row="1" Style="{StaticResource PaginationBorder}" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding PreviousPageCommand}" Style="{StaticResource ModernIconButton}" Width="32" Height="32">
+                            <materialDesign:PackIcon Kind="ChevronRight" Width="18" Height="18"/>
+                        </Button>
+                        <TextBlock Text="{Binding CurrentPage, StringFormat=صفحة {0}}" 
+                                   VerticalAlignment="Center" Margin="16,0" 
+                                   Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="SemiBold" FontSize="13"/>
+                        <Button Command="{Binding NextPageCommand}" Style="{StaticResource ModernIconButton}" Width="32" Height="32">
+                            <materialDesign:PackIcon Kind="ChevronLeft" Width="18" Height="18"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,152 @@
+<UserControl x:Class="RetailApp.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:settings="clr-namespace:RetailApp.Views.Settings"
+             FlowDirection="RightToLeft">
+             
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="إعدادات النظام" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="المركز الموحد للتحكم بجميع تفضيلات المؤسسة والتطبيق" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource BrandSuccessBrush}" VerticalAlignment="Center" Margin="0,0,16,0" FontWeight="SemiBold"/>
+                <Button Style="{StaticResource ModernPrimaryButton}" Command="{Binding SaveSettingsCommand}" Height="40" Padding="24,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ContentSaveOutline" Width="18" Height="18" Margin="0,0,8,0"/>
+                        <TextBlock Text="حفظ الإعدادات" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content (Sidebar + Settings Area) -->
+        <Border Grid.Row="1" Style="{StaticResource KpiCard}" Padding="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sidebar Categories -->
+                <ListBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" 
+                         Background="Transparent" BorderThickness="0" Margin="0,16,0,16">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="24,12"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="FontWeight" Value="Medium"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Border" Padding="{TemplateBinding Padding}" Background="Transparent">
+                                            <ContentPresenter />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="#0A000000"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="#153B82F6"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource BrandPrimaryBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+
+                <Border Grid.Column="1" Background="{DynamicResource BorderBrush}"/>
+
+                <!-- Settings Content Area -->
+                <ScrollViewer Grid.Column="2" Padding="32" VerticalScrollBarVisibility="Auto">
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Resources>
+                            <!-- WPF requires DataTemplates in Triggers to be defined as Resources -->
+                            <DataTemplate x:Key="CompanyTemplate"><settings:CompanySettingsView/></DataTemplate>
+                            <DataTemplate x:Key="GeneralTemplate"><settings:GeneralSettingsView/></DataTemplate>
+                            <DataTemplate x:Key="PosTemplate"><settings:PosSettingsView/></DataTemplate>
+                            <DataTemplate x:Key="PrintingTemplate"><settings:PrintDesignerView DataContext="{Binding PrintDesignerViewModel}"/></DataTemplate>
+                            <DataTemplate x:Key="InventoryTemplate"><settings:InventorySettingsView/></DataTemplate>
+                            <DataTemplate x:Key="AccountingTemplate"><settings:AccountingSettingsView/></DataTemplate>
+                            <DataTemplate x:Key="SecurityTemplate"><settings:SecuritySettingsView/></DataTemplate>
+                            <DataTemplate x:Key="NotificationsTemplate"><settings:NotificationsSettingsView/></DataTemplate>
+                            <DataTemplate x:Key="AppearanceTemplate"><settings:AppearanceSettingsView/></DataTemplate>
+                            <DataTemplate x:Key="BackupTemplate"><settings:BackupSettingsView DataContext="{Binding BackupViewModel}"/></DataTemplate>
+                            <DataTemplate x:Key="LicenseTemplate"><settings:LicenseSettingsView DataContext="{Binding LicenseViewModel}"/></DataTemplate>
+                            <DataTemplate x:Key="AboutTemplate"><settings:AboutSettingsView/></DataTemplate>
+                            <DataTemplate x:Key="DefaultTemplate">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,100,0,0">
+                                    <materialDesign:PackIcon Kind="SettingsOutline" Width="64" Height="64" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                                    <TextBlock Text="جاري إعداد هذا القسم من الإعدادات..." FontSize="16" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="ContentTemplate" Value="{StaticResource DefaultTemplate}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="إعدادات الشركة">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource CompanyTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="الإعدادات العامة">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource GeneralTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="نقطة البيع (POS)">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource PosTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="الطباعة">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource PrintingTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="المخزون">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource InventoryTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="الحسابات">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource AccountingTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="الأمان">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource SecurityTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="الإشعارات">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource NotificationsTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="المظهر والثيمات">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource AppearanceTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="النسخ الاحتياطي">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource BackupTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="تفعيل الترخيص">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource LicenseTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="حول البرنامج">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource AboutTemplate}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

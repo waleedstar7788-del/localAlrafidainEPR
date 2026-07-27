@@ -1,0 +1,15 @@
+<UserControl x:Class="RetailApp.Views.Settings.AboutSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50,0,0">
+        <materialDesign:PackIcon Kind="StorefrontOutline" Width="100" Height="100" Foreground="{DynamicResource BrandPrimaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,24"/>
+        <TextBlock Text="Retail POS Enterprise" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+        <TextBlock Text="الإصدار 2.0.0 (Production Build)" FontSize="16" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,8,0,24"/>
+        
+        <TextBlock Text="نظام إدارة مبيعات متكامل" FontSize="16" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+        <TextBlock Text="جميع الحقوق محفوظة © 2026" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,24"/>
+        
+        <Button Content="التحقق من وجود تحديثات" Style="{DynamicResource ModernSecondaryButton}" Width="250" HorizontalAlignment="Center"/>
+    </StackPanel>
+</UserControl>

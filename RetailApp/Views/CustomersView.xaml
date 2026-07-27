@@ -1,0 +1,208 @@
+<UserControl x:Class="RetailApp.Views.CustomersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- Header -->
+            <RowDefinition Height="Auto"/>  <!-- Stats -->
+            <RowDefinition Height="Auto"/>  <!-- Search/Actions -->
+            <RowDefinition Height="*"/>     <!-- DataGrid -->
+        </Grid.RowDefinitions>
+
+        <!-- ═══ PAGE HEADER ═══ -->
+        <Grid Grid.Row="0" Margin="0,0,0,24">
+            <StackPanel>
+                <TextBlock Text="إدارة العملاء" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="عرض وإدارة جميع العملاء المسجلين في النظام" FontSize="13" 
+                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══ KPI STATS ROW ═══ -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource KpiCard}">
+                <StackPanel>
+                    <TextBlock Text="إجمالي العملاء" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding TotalCustomers}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource KpiCard}">
+                <StackPanel>
+                    <TextBlock Text="عملاء جدد (هذا الشهر)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding NewCustomersThisMonth}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandSuccessBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="4" Style="{StaticResource KpiCard}">
+                <StackPanel>
+                    <TextBlock Text="عملاء VIP" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding VipCustomers}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandWarningBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="6" Style="{StaticResource KpiCard}">
+                <StackPanel>
+                    <TextBlock Text="عملاء مديونين" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding Debtors}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrandDangerBrush}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ═══ SEARCH & ACTIONS BAR ═══ -->
+        <Grid Grid.Row="2" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Search Bar -->
+            <Border Grid.Column="0" Style="{StaticResource SearchBarBorder}" HorizontalAlignment="Right" Width="400">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Kind="Magnify" Foreground="{DynamicResource TextMutedBrush}" 
+                                             VerticalAlignment="Center" Margin="14,0,10,0" Width="18" Height="18"/>
+                    <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                             materialDesign:HintAssist.Hint="ابحث بالاسم، الجوال، أو الرقم..."
+                             materialDesign:HintAssist.Foreground="{DynamicResource TextMutedBrush}"
+                             materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                             Foreground="{DynamicResource TextPrimaryBrush}" BorderThickness="0" 
+                             Background="Transparent" VerticalAlignment="Center" FontSize="13"/>
+                </Grid>
+            </Border>
+
+            <!-- Actions -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Style="{StaticResource ModernPrimaryButton}" Command="{Binding AddCustomerCommand}" Padding="18,10" Height="40">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountPlus" Width="18" Height="18" Margin="0,0,10,0"/>
+                        <TextBlock Text="إضافة عميل" FontSize="13"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══ DATA TABLE ═══ -->
+        <Border Grid.Row="3" Style="{StaticResource KpiCard}" Padding="0" ClipToBounds="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid ItemsSource="{Binding Customers}" AutoGenerateColumns="False" IsReadOnly="True"
+                          Background="Transparent" BorderThickness="0" RowBackground="Transparent" 
+                          AlternatingRowBackground="{DynamicResource SurfaceHighlightBrush}"
+                          HeadersVisibility="Column" GridLinesVisibility="None" 
+                          Foreground="{DynamicResource TextPrimaryBrush}"
+                          SelectionMode="Single" SelectionUnit="FullRow"
+                          CanUserResizeColumns="True" FontSize="13">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#06FFFFFF"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="FontSize" Value="13"/>
+                            <Setter Property="Padding" Value="20,14"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Padding" Value="20,12"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridCell">
+                                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#122563EB"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            <Setter Property="BorderBrush" Value="#08FFFFFF"/>
+                            <Setter Property="MinHeight" Value="50"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#06FFFFFF"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#122563EB"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="رقم العميل" Binding="{Binding CustomerNumber}" Width="100"/>
+                        <DataGridTextColumn Header="الاسم الكامل" Binding="{Binding FullName}" Width="2*"/>
+                        <DataGridTextColumn Header="رقم الهاتف" Binding="{Binding Phone1}" Width="1.5*"/>
+                        <DataGridTextColumn Header="التصنيف" Binding="{Binding Rank}" Width="1*"/>
+                        <DataGridTextColumn Header="الرصيد المتبقي" Binding="{Binding CurrentBalance, StringFormat={}{0:N2}}" Width="1*"/>
+                        <DataGridTemplateColumn Header="إجراءات" Width="140">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Style="{StaticResource ModernIconButton}" Width="32" Height="32"
+                                                Foreground="{DynamicResource TextSecondaryBrush}"
+                                                Command="{Binding DataContext.OpenProfileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" ToolTip="عرض الملف">
+                                            <materialDesign:PackIcon Kind="EyeOutline" Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ModernIconButton}" Width="32" Height="32"
+                                                Foreground="{DynamicResource BrandAccentBrush}" Margin="4,0"
+                                                Command="{Binding DataContext.EditCustomerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" ToolTip="تعديل">
+                                            <materialDesign:PackIcon Kind="PencilOutline" Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ModernIconButton}" Width="32" Height="32"
+                                                Foreground="{DynamicResource BrandDangerBrush}"
+                                                Command="{Binding DataContext.DeleteCustomerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" ToolTip="حذف">
+                                            <materialDesign:PackIcon Kind="TrashCanOutline" Width="16" Height="16"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Pagination -->
+                <Border Grid.Row="1" Style="{StaticResource PaginationBorder}" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding PreviousPageCommand}" Style="{StaticResource ModernIconButton}" Width="32" Height="32">
+                            <materialDesign:PackIcon Kind="ChevronRight" Width="18" Height="18"/>
+                        </Button>
+                        <TextBlock Text="{Binding CurrentPage, StringFormat=صفحة {0}}" 
+                                   VerticalAlignment="Center" Margin="16,0" 
+                                   Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="SemiBold" FontSize="13"/>
+                        <Button Command="{Binding NextPageCommand}" Style="{StaticResource ModernIconButton}" Width="32" Height="32">
+                            <materialDesign:PackIcon Kind="ChevronLeft" Width="18" Height="18"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

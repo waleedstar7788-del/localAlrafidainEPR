@@ -1,0 +1,35 @@
+<UserControl x:Class="RetailApp.Controls.StatCardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <Border Style="{StaticResource KpiCard}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Value}" FontSize="23" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="#1522C55E" CornerRadius="4" Padding="6,2" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="TrendingUp" Width="14" Height="14" Foreground="{DynamicResource BrandSuccessBrush}" Margin="0,0,4,0"/>
+                            <TextBlock Text="{Binding Trend}" FontSize="12" Foreground="{DynamicResource BrandSuccessBrush}" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="هذا الشهر" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Icon Circle -->
+            <Border Grid.Column="1" Width="48" Height="48" CornerRadius="14" VerticalAlignment="Top" Background="#152563EB">
+                <materialDesign:PackIcon Kind="{Binding Icon}" Width="24" Height="24" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         Foreground="{DynamicResource BrandPrimaryBrush}"/>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

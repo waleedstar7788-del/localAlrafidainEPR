@@ -1,0 +1,210 @@
+<Window x:Class="LicenseGenerator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="مُوَلِّد أكتفيشن التراخيص - RetailApp Key Generator (المطور)"
+        Height="840" Width="1060"
+        MinHeight="740" MinWidth="980"
+        WindowStartupLocation="CenterScreen"
+        FlowDirection="RightToLeft"
+        Background="#F1F5F9"
+        FontFamily="Segoe UI, Tahoma, Arial">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Banner -->
+        <Border Grid.Row="0" CornerRadius="12" Padding="24,18" Margin="0,0,0,20">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#0F172A" Offset="0.0"/>
+                    <GradientStop Color="#1E293B" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="KeyChain" Width="28" Height="28" Foreground="#38BDF8" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="مُوَلِّد أكواد التفعيل المرمزّة (Compact Key Encoder)" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Text="أداة المطور الخاصة بحقن بيانات الاشتراك والتوقيع الرقمي داخل كود تفعيل نصي واحد (RA-XXXXX-XXXXX...)" FontSize="12" Foreground="#94A3B8" Margin="38,4,0,0"/>
+                </StackPanel>
+
+                <Border Grid.Column="1" Background="#1E293B" CornerRadius="8" Padding="12,6" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ShieldCheck" Width="18" Height="18" Foreground="#38BDF8" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="HMAC-SHA256 Encoded" Foreground="#E2E8F0" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Panel: License Form -->
+            <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="24" Margin="0,0,12,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Form Header -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <materialDesign:PackIcon Kind="CardAccountDetails" Width="24" Height="24" Foreground="#2563EB" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="بيانات التفعيل المطلوب حقنها" FontSize="16" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Customer & Company Inputs -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="اسم العميل (Customer Name)" FontSize="12" FontWeight="SemiBold" Foreground="#334155" Margin="0,0,0,6"/>
+                                <TextBox x:Name="TxtCustomerName" FontSize="13" Padding="10,8" Height="38" BorderThickness="1" BorderBrush="#CBD5E1" Text="عميل الرافدين"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="اسم الشركة / المحل (Company)" FontSize="12" FontWeight="SemiBold" Foreground="#334155" Margin="0,0,0,6"/>
+                                <TextBox x:Name="TxtCompanyName" FontSize="13" Padding="10,8" Height="38" BorderThickness="1" BorderBrush="#CBD5E1" Text="الرافدين ERP"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Machine ID (With DockPanel) -->
+                        <StackPanel Margin="0,0,0,18">
+                            <DockPanel LastChildFill="False" Margin="0,0,0,6">
+                                <TextBlock DockPanel.Dock="Right" Text="معرف الجهاز المستهدف (Machine ID)" FontSize="12" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center"/>
+                                <Button x:Name="BtnUniversalMachine" DockPanel.Dock="Left" Content="ترخيص عام لجميع الأجهزة (*)" Click="BtnUniversalMachine_Click" HorizontalAlignment="Left"
+                                        FontSize="11" Foreground="#2563EB" Cursor="Hand" Style="{StaticResource MaterialDesignFlatButton}" Height="26" Padding="6,0"/>
+                            </DockPanel>
+                            <TextBox x:Name="TxtMachineId" FontSize="13" Padding="10,8" Height="38" BorderThickness="1" BorderBrush="#CBD5E1" FontFamily="Consolas" Text="" materialDesign:HintAssist.Hint="ألصق كود جهاز الزبون هنا (مثال: RET-5FBDF...)" TextChanged="TxtMachineId_TextChanged"/>
+                        </StackPanel>
+
+                        <!-- License Type & Max Devices -->
+                        <Grid Margin="0,0,0,18">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="نوع الترخيص (Subscription)" FontSize="12" FontWeight="SemiBold" Foreground="#334155" Margin="0,0,0,6"/>
+                                <ComboBox x:Name="CmbLicenseType" FontSize="13" Padding="10,6" Height="38" BorderThickness="1" BorderBrush="#CBD5E1" SelectionChanged="CmbLicenseType_SelectionChanged">
+                                    <ComboBoxItem Content="Trial (تجريبي)"/>
+                                    <ComboBoxItem Content="Monthly (شهري)"/>
+                                    <ComboBoxItem Content="Quarterly (ربع سنوي)"/>
+                                    <ComboBoxItem Content="Yearly (سنوي)" IsSelected="True"/>
+                                    <ComboBoxItem Content="Lifetime (مدى الحياة)"/>
+                                    <ComboBoxItem Content="Custom (مخصص)"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="عدد الأجهزة (Max Devices)" FontSize="12" FontWeight="SemiBold" Foreground="#334155" Margin="0,0,0,6"/>
+                                <ComboBox x:Name="CmbMaxDevices" IsEditable="True" Text="1" FontSize="13" Padding="10,6" Height="38" BorderThickness="1" BorderBrush="#CBD5E1">
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="5"/>
+                                    <ComboBoxItem Content="10"/>
+                                    <ComboBoxItem Content="* (غير محدود)"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Activation Start Mode -->
+                        <StackPanel Margin="0,0,0,18">
+                            <TextBlock Text="نمط بدء الاحتساب (Activation Start Mode)" FontSize="12" FontWeight="Bold" Foreground="#0F172A" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="CmbActivationMode" FontSize="13" Padding="10,6" Height="38" BorderThickness="1" BorderBrush="#CBD5E1">
+                                <ComboBoxItem Content="من أول استخدام عند إدخال الكود ⚡ (Recommended)" IsSelected="True"/>
+                                <ComboBoxItem Content="من تاريخ إصدار الكود اليوم 📅"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Activation Duration Days -->
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock Text="مدة الأيام الممنوحة (Duration Days)" FontSize="12" FontWeight="Bold" Foreground="#0F172A" Margin="0,0,0,6"/>
+                            <TextBox x:Name="TxtDurationDays" FontSize="14" FontWeight="Bold" Foreground="#2563EB" Padding="10,8" Height="38" BorderThickness="1.5" BorderBrush="#3B82F6" Text="365"/>
+                            <TextBlock Text="الأيام (مثلاً: 14 للتجريبي، 30 للشهر، 365 للسنة، 36500 لمدى الحياة)" FontSize="11" Foreground="#64748B" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <!-- Generate Code Button -->
+                        <Button x:Name="BtnGenerateLicenseCode" Click="BtnGenerateLicenseCode_Click"
+                                Background="#2563EB" Foreground="White" Height="48" FontSize="15" FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                materialDesign:ButtonAssist.CornerRadius="8">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="KeyVariant" Width="22" Height="22" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="إنشاء كود التفعيل المرمز (RA-) ⚡" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Right Panel: Output Code & Injected Payload Summary -->
+            <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="24" Margin="12,0,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <materialDesign:PackIcon Kind="KeyOutline" Width="24" Height="24" Foreground="#059669" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="كود التفعيل الناتج والمعلومات المحقونة" FontSize="16" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Generated Code Display Box -->
+                    <Border Background="#F8FAFC" BorderBrush="#2563EB" BorderThickness="2" CornerRadius="10" Padding="16" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="كود التفعيل جاهز للإرسال للعميل:" FontSize="12" Foreground="#64748B" Margin="0,0,0,8"/>
+                            <TextBox x:Name="TxtGeneratedCode" IsReadOnly="True" TextWrapping="Wrap" 
+                                     FontFamily="Consolas" FontSize="15" FontWeight="Bold" Foreground="#2563EB" 
+                                     Background="Transparent" BorderThickness="0" MinHeight="60" Margin="0,0,0,12"/>
+                            
+                            <Button x:Name="BtnCopyCode" Content="نسخ كود التفعيل إلى الحافظة 📋" Click="BtnCopyCode_Click"
+                                    Background="#059669" Foreground="White" Height="40" FontSize="13" FontWeight="Bold"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    materialDesign:ButtonAssist.CornerRadius="6"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Injected Payload Summary -->
+                    <Border Background="#F1F5F9" CornerRadius="8" Padding="14" Margin="0,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="تفاصيل بيانات الاشتراك المحقونة في هذا الكود:" FontSize="13" FontWeight="Bold" Foreground="#0F172A" Margin="0,0,0,10"/>
+                            <TextBlock x:Name="TxtPayloadDetails" Text="اضغط على زر إنشاء كود التفعيل لاستخراج البيانات المحقونة والتأكد من مطابقتها." 
+                                       FontSize="12" Foreground="#334155" TextWrapping="Wrap" LineHeight="20"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Footer Log/Status Bar -->
+        <Border Grid.Row="2" Background="#0F172A" CornerRadius="8" Padding="14,10" Margin="0,16,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <materialDesign:PackIcon Kind="Console" Width="18" Height="18" Foreground="#38BDF8" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock x:Name="TxtStatusLog" Grid.Column="1" Text="جاهز لتوليد وحقن أكواد التراخيص." Foreground="#E2E8F0" FontSize="12" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

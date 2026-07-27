@@ -1,0 +1,82 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ─── FROSTED PEARL COLOR PALETTE (LIGHT MODE) ─── -->
+    <Color x:Key="PrimaryColor">#059669</Color>         <!-- Emerald Primary -->
+    <Color x:Key="AccentColor">#0891B2</Color>          <!-- Ocean Cyan -->
+    <Color x:Key="PrimaryLightColor">#10B981</Color>     <!-- Bright Emerald -->
+    <Color x:Key="PrimaryDarkColor">#047857</Color>      <!-- Deep Forest -->
+
+    <!-- Semantic -->
+    <Color x:Key="SuccessColor">#059669</Color>
+    <Color x:Key="WarningColor">#D97706</Color>
+    <Color x:Key="DangerColor">#DC2626</Color>
+    <Color x:Key="InfoColor">#2563EB</Color>
+
+    <!-- Surfaces -->
+    <Color x:Key="BgBaseColor">#F1F5F9</Color>          <!-- Soft Pearl Base -->
+    <Color x:Key="BgSurfaceColor">#E2E8F0</Color>       <!-- Soft Slate Surface -->
+    <Color x:Key="BgCardColor">#FFFFFF</Color>          <!-- Pure White Card -->
+    <Color x:Key="BgElevatedColor">#FFFFFF</Color>      <!-- Elevated White Card -->
+    <Color x:Key="BorderColor">#CBD5E1</Color>          <!-- Crisp Slate Border -->
+    <Color x:Key="BorderLightColor">#E2E8F0</Color>     <!-- Subdued Light Border -->
+
+    <!-- Text -->
+    <Color x:Key="TextPrimaryColor">#0F172A</Color>     <!-- Deep Slate Primary -->
+    <Color x:Key="TextSecondaryColor">#334155</Color>   <!-- Medium Charcoal -->
+    <Color x:Key="TextMutedColor">#64748B</Color>       <!-- Subdued Slate -->
+
+    <!-- ─── SOLID COLOR BRUSHES ─── -->
+    <SolidColorBrush x:Key="BrandPrimaryBrush" Color="{DynamicResource PrimaryColor}" />
+    <SolidColorBrush x:Key="BrandAccentBrush" Color="{DynamicResource AccentColor}" />
+    <SolidColorBrush x:Key="BrandPrimaryLightBrush" Color="{DynamicResource PrimaryLightColor}" />
+    <SolidColorBrush x:Key="BrandPrimaryDarkBrush" Color="{DynamicResource PrimaryDarkColor}" />
+
+    <SolidColorBrush x:Key="BrandSuccessBrush" Color="{DynamicResource SuccessColor}" />
+    <SolidColorBrush x:Key="BrandWarningBrush" Color="{DynamicResource WarningColor}" />
+    <SolidColorBrush x:Key="BrandDangerBrush" Color="{DynamicResource DangerColor}" />
+    <SolidColorBrush x:Key="BrandInfoBrush" Color="{DynamicResource InfoColor}" />
+
+    <SolidColorBrush x:Key="BgBaseBrush" Color="{DynamicResource BgBaseColor}" />
+    <SolidColorBrush x:Key="BgSurfaceBrush" Color="{DynamicResource BgSurfaceColor}" />
+    <SolidColorBrush x:Key="BgCardBrush" Color="{DynamicResource BgCardColor}" />
+    <SolidColorBrush x:Key="BgElevatedBrush" Color="{DynamicResource BgElevatedColor}" />
+    <SolidColorBrush x:Key="BorderBrush" Color="{DynamicResource BorderColor}" />
+    <SolidColorBrush x:Key="BorderLightBrush" Color="{DynamicResource BorderLightColor}" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{DynamicResource TextPrimaryColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{DynamicResource TextSecondaryColor}" />
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{DynamicResource TextMutedColor}" />
+
+    <!-- ─── STRUCTURAL & TRANSPARENT BRUSHES ─── -->
+    <LinearGradientBrush x:Key="SidebarBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#F8FAFC" Offset="0"/>
+        <GradientStop Color="#F1F5F9" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TopBarBackgroundBrush" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Color="#FFFFFF" Offset="0"/>
+        <GradientStop Color="#F8FAFC" Offset="1"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="SurfaceHighlightBrush" Color="#08000000" />
+    <SolidColorBrush x:Key="SurfaceHighlightStrongBrush" Color="#12000000" />
+    <SolidColorBrush x:Key="DividerBrush" Color="#E2E8F0" />
+    <SolidColorBrush x:Key="OverlayBackgroundBrush" Color="#80FFFFFF" />
+
+    <SolidColorBrush x:Key="BrandPrimaryTransparentBrush" Color="#1A059669" />
+    <SolidColorBrush x:Key="BrandSuccessTransparentBrush" Color="#1A059669" />
+    <SolidColorBrush x:Key="BrandWarningTransparentBrush" Color="#1AD97706" />
+    <SolidColorBrush x:Key="BrandDangerTransparentBrush" Color="#1ADC2626" />
+    <SolidColorBrush x:Key="BrandInfoTransparentBrush" Color="#1A2563EB" />
+
+    <!-- LEGACY COMPATIBILITY ALIASES -->
+    <SolidColorBrush x:Key="BrandDarkNavyBrush" Color="{DynamicResource BgBaseColor}" />
+    <SolidColorBrush x:Key="BrandDarkNavyLightBrush" Color="{DynamicResource BgCardColor}" />
+    <SolidColorBrush x:Key="BrandModernBlueBrush" Color="{DynamicResource AccentColor}" />
+    <SolidColorBrush x:Key="BrandEmeraldGreenBrush" Color="{DynamicResource SuccessColor}" />
+    <SolidColorBrush x:Key="BrandOrangeBrush" Color="{DynamicResource WarningColor}" />
+    <SolidColorBrush x:Key="BrandRedBrush" Color="{DynamicResource DangerColor}" />
+    <SolidColorBrush x:Key="BrandWhiteBrush" Color="{DynamicResource TextPrimaryColor}" />
+
+</ResourceDictionary>
