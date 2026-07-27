@@ -7,22 +7,17 @@ namespace RetailApp.Services
     {
         public string GetCurrentVersion()
         {
-            var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            if (assemblyVersion != null)
-            {
-                return $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}";
-            }
-            return "1.0.0";
+            return "1.0.3";
         }
 
         public string GetBuildNumber()
         {
-            return "2026.07.19";
+            return "2026.07.27";
         }
 
         public string GetReleaseDate()
         {
-            return "2026-07-19";
+            return "2026-07-27";
         }
     }
 }
