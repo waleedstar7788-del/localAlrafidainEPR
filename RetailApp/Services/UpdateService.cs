@@ -183,26 +183,39 @@ namespace RetailApp.Services
 
                 string tempPath = Path.Combine(Path.GetTempPath(), "RetailApp_Update_Installer.exe");
 
-                using var contentStream = await response.Content.ReadAsStreamAsync();
-                using var fileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
-
-                var buffer = new byte[8192];
-                long totalBytesRead = 0;
-                int bytesRead;
-
-                while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                using (var contentStream = await response.Content.ReadAsStreamAsync())
+                using (var fileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                 {
-                    await fileStream.WriteAsync(buffer, 0, bytesRead);
-                    totalBytesRead += bytesRead;
+                    var buffer = new byte[8192];
+                    long totalBytesRead = 0;
+                    int bytesRead;
 
-                    if (totalBytes.HasValue && totalBytes.Value > 0)
+                    while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
-                        double progressPercentage = (double)totalBytesRead / totalBytes.Value * 100;
-                        progress?.Report(progressPercentage);
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        totalBytesRead += bytesRead;
+
+                        if (totalBytes.HasValue && totalBytes.Value > 0)
+                        {
+                            double progressPercentage = (double)totalBytesRead / totalBytes.Value * 100;
+                            progress?.Report(progressPercentage);
+                        }
                     }
                 }
 
-                fileStream.Close();
+                // التحقق الهيكلي الصارم من توقيع رأس ملفات الويندوز التنفيذية PE (MZ = 0x4D, 0x5A)
+                using (var checkStream = new FileStream(tempPath, FileMode.Open, FileAccess.Read))
+                {
+                    var header = new byte[2];
+                    int readBytes = checkStream.Read(header, 0, 2);
+                    if (readBytes < 2 || header[0] != 0x4D || header[1] != 0x5A)
+                    {
+                        checkStream.Close();
+                        try { File.Delete(tempPath); } catch { }
+                        return false; // الملف ليس ملف مثبت Windows حقيقي (مثلاً صفحة HTML)
+                    }
+                }
+
                 progress?.Report(100);
 
                 Process.Start(new ProcessStartInfo
