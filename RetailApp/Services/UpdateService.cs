@@ -138,7 +138,7 @@ namespace RetailApp.Services
 
         private async Task<string> ScrapeReleaseAssetUrlAsync(string tag)
         {
-            if (string.IsNullOrWhiteSpace(tag)) return $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{tag}/RetailApp_Setup.exe";
+            if (string.IsNullOrWhiteSpace(tag)) return "";
 
             try
             {
@@ -153,7 +153,7 @@ namespace RetailApp.Services
             }
             catch { }
 
-            return $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{tag}/RetailApp_Setup.exe";
+            return "";
         }
 
         public async Task<bool> DownloadUpdateAsync(string url, IProgress<double>? progress = null)
@@ -212,7 +212,7 @@ namespace RetailApp.Services
                     {
                         checkStream.Close();
                         try { File.Delete(tempPath); } catch { }
-                        return false; // الملف ليس ملف مثبت Windows حقيقي (مثلاً صفحة HTML)
+                        return false;
                     }
                 }
 
