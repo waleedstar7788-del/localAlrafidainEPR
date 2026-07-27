@@ -1,8 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ─── CYBER OBSIDIAN COLOR PALETTE (DARK MODE) ─── -->
-    <Color x:Key="PrimaryColor">#10B981</Color>         <!-- Neon Emerald -->
+    <!-- ─── CYBER OBSIDIAN ULTRA-LUXURY PALETTE (2026 REBRAND) ─── -->
+    <Color x:Key="PrimaryColor">#10B981</Color>         <!-- Vibrant Neon Emerald -->
     <Color x:Key="AccentColor">#06B6D4</Color>          <!-- Glowing Cyan -->
     <Color x:Key="PrimaryLightColor">#34D399</Color>     <!-- Vibrant Mint -->
     <Color x:Key="PrimaryDarkColor">#059669</Color>      <!-- Deep Emerald -->
@@ -11,19 +11,19 @@
     <Color x:Key="SuccessColor">#10B981</Color>
     <Color x:Key="WarningColor">#F59E0B</Color>
     <Color x:Key="DangerColor">#EF4444</Color>
-    <Color x:Key="InfoColor">#3B82F6</Color>
+    <Color x:Key="InfoColor">#38BDF8</Color>
 
     <!-- Glass & Surface Palette (Cyber Slate) -->
     <Color x:Key="BgBaseColor">#090D16</Color>          <!-- Deep Night Base -->
-    <Color x:Key="BgSurfaceColor">#111827</Color>       <!-- Glass Slate -->
-    <Color x:Key="BgCardColor">#1F293D</Color>          <!-- Elevated Card -->
-    <Color x:Key="BgElevatedColor">#2A364F</Color>      <!-- High Contrast Surface -->
-    <Color x:Key="BorderColor">#374151</Color>          <!-- Border Neutral -->
-    <Color x:Key="BorderLightColor">#1F2937</Color>     <!-- Subdued Border -->
+    <Color x:Key="BgSurfaceColor">#0F172A</Color>       <!-- Glass Slate -->
+    <Color x:Key="BgCardColor">#1E293B</Color>          <!-- Elevated Card -->
+    <Color x:Key="BgElevatedColor">#334155</Color>      <!-- High Contrast Surface -->
+    <Color x:Key="BorderColor">#334155</Color>          <!-- Border Neutral -->
+    <Color x:Key="BorderLightColor">#1E293B</Color>     <!-- Subdued Border -->
 
     <!-- Typography Palette -->
-    <Color x:Key="TextPrimaryColor">#F9FAFB</Color>     <!-- High Contrast Pure White -->
-    <Color x:Key="TextSecondaryColor">#E2E8F0</Color>   <!-- Soft Slate -->
+    <Color x:Key="TextPrimaryColor">#F8FAFC</Color>     <!-- High Contrast Pure White -->
+    <Color x:Key="TextSecondaryColor">#CBD5E1</Color>   <!-- Soft Slate -->
     <Color x:Key="TextMutedColor">#94A3B8</Color>       <!-- Subtle Gray -->
 
     <!-- ─── SOLID COLOR BRUSHES ─── -->
@@ -49,8 +49,8 @@
     <SolidColorBrush x:Key="TextMutedBrush" Color="{DynamicResource TextMutedColor}" />
 
     <!-- ─── GLASSMORPHIC & GLOW EFFECTS ─── -->
-    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#0D1322" />
-    <SolidColorBrush x:Key="TopBarBackgroundBrush" Color="#111827" />
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#0B0F19" />
+    <SolidColorBrush x:Key="TopBarBackgroundBrush" Color="#0F172A" />
 
     <SolidColorBrush x:Key="SurfaceHighlightBrush" Color="#0DFFFFFF" />
     <SolidColorBrush x:Key="SurfaceHighlightStrongBrush" Color="#1AFFFFFF" />
@@ -61,7 +61,7 @@
     <SolidColorBrush x:Key="BrandSuccessTransparentBrush" Color="#2010B981" />
     <SolidColorBrush x:Key="BrandWarningTransparentBrush" Color="#20F59E0B" />
     <SolidColorBrush x:Key="BrandDangerTransparentBrush" Color="#20EF4444" />
-    <SolidColorBrush x:Key="BrandInfoTransparentBrush" Color="#203B82F6" />
+    <SolidColorBrush x:Key="BrandInfoTransparentBrush" Color="#2038BDF8" />
 
     <!-- LEGACY COMPATIBILITY ALIASES -->
     <SolidColorBrush x:Key="BrandDarkNavyBrush" Color="{DynamicResource BgBaseColor}" />

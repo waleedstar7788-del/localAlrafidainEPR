@@ -222,7 +222,16 @@ namespace RetailApp.ViewModels
         [RelayCommand] private void NavigateToSettings() => NavigateInner(GetVm<SettingsViewModel>());
         [RelayCommand] private void NavigateToAbout() => NavigateInner(GetVm<AboutViewModel>());
         [RelayCommand] private void NavigateToDeveloperDashboard() => NavigateInner(GetVm<DeveloperDashboardViewModel>());
-        [RelayCommand] private void NavigateToUpdateView() => NavigateInner(GetVm<UpdateViewModel>());
+        [RelayCommand]
+        private void NavigateToUpdateView()
+        {
+            var updateVm = GetVm<UpdateViewModel>();
+            if (AvailableUpdateInfo != null)
+            {
+                updateVm.SetAvailableUpdate(AvailableUpdateInfo);
+            }
+            NavigateInner(updateVm);
+        }
         [RelayCommand] private void NavigateToLicense() => NavigateInner(GetVm<LicenseViewModel>());
     }
 }

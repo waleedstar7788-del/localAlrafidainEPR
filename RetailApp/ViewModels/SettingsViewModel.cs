@@ -17,6 +17,7 @@ namespace RetailApp.ViewModels
         public BackupViewModel BackupViewModel { get; }
         public LicenseViewModel LicenseViewModel { get; }
         public PrintDesignerViewModel PrintDesignerViewModel { get; }
+        public UpdateViewModel UpdateViewModel { get; }
 
         [ObservableProperty]
         private AppSettings _dbSettings;
@@ -40,13 +41,14 @@ namespace RetailApp.ViewModels
         public ICommand ApplyThemeCommand { get; }
         public ICommand ApplyAccentColorCommand { get; }
 
-        public SettingsViewModel(ISettingsService settingsService, IThemeService themeService, BackupViewModel backupViewModel, LicenseViewModel licenseViewModel, PrintDesignerViewModel printDesignerViewModel)
+        public SettingsViewModel(ISettingsService settingsService, IThemeService themeService, BackupViewModel backupViewModel, LicenseViewModel licenseViewModel, PrintDesignerViewModel printDesignerViewModel, UpdateViewModel updateViewModel)
         {
             _settingsService = settingsService;
             _themeService = themeService;
             BackupViewModel = backupViewModel;
             LicenseViewModel = licenseViewModel;
             PrintDesignerViewModel = printDesignerViewModel;
+            UpdateViewModel = updateViewModel;
 
             _dbSettings = new AppSettings();
             _localSettings = new LocalSettings();
@@ -65,6 +67,7 @@ namespace RetailApp.ViewModels
                 "الإشعارات",
                 "المظهر والثيمات",
                 "النسخ الاحتياطي",
+                "تحديثات النظام",
                 "تفعيل الترخيص",
                 "حول البرنامج"
             };
@@ -88,7 +91,6 @@ namespace RetailApp.ViewModels
             catch (Exception ex)
             {
                 StatusMessage = $"خطأ في تحميل الإعدادات: {ex.Message}";
-                // Fallback to empty if failed
                 if (DbSettings == null) DbSettings = new AppSettings();
                 if (LocalSettings == null) LocalSettings = new LocalSettings();
             }

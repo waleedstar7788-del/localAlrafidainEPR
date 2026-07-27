@@ -54,24 +54,29 @@ namespace RetailApp.Services
                     releaseDate = parsedDate;
                 }
 
-                // البحث عن رابط التنزيل لملف المثبت (.exe) في الأصول (Assets)
+                // البحث عن رابط التنزيل المباشر في أصول GitHub Release
                 string downloadUrl = "";
                 if (root.TryGetProperty("assets", out var assetsElem) && assetsElem.ValueKind == JsonValueKind.Array)
                 {
                     foreach (var asset in assetsElem.EnumerateArray())
                     {
-                        string name = asset.TryGetProperty("name", out var nameElem) ? nameElem.GetString() ?? "" : "";
-                        if (name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || name.EndsWith(".msi", StringComparison.OrdinalIgnoreCase))
+                        string dl = asset.TryGetProperty("browser_download_url", out var dlElem) ? dlElem.GetString() ?? "" : "";
+                        if (!string.IsNullOrEmpty(dl))
                         {
-                            downloadUrl = asset.TryGetProperty("browser_download_url", out var dlElem) ? dlElem.GetString() ?? "" : "";
-                            break;
+                            downloadUrl = dl;
+                            // تفضيل الملفات التنفيذية والمضغوطة
+                            string name = asset.TryGetProperty("name", out var nameElem) ? nameElem.GetString() ?? "" : "";
+                            if (name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || name.EndsWith(".msi", StringComparison.OrdinalIgnoreCase))
+                            {
+                                break;
+                            }
                         }
                     }
                 }
 
-                if (string.IsNullOrEmpty(downloadUrl) && root.TryGetProperty("html_url", out var htmlElem))
+                if (string.IsNullOrEmpty(downloadUrl) && root.TryGetProperty("zipball_url", out var zipElem))
                 {
-                    downloadUrl = htmlElem.GetString() ?? "";
+                    downloadUrl = zipElem.GetString() ?? "";
                 }
 
                 return new UpdateInfo
@@ -96,7 +101,8 @@ namespace RetailApp.Services
 
             try
             {
-                string tempPath = Path.Combine(Path.GetTempPath(), "RetailApp_Setup_Update.exe");
+                string extension = url.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ? ".zip" : ".exe";
+                string tempPath = Path.Combine(Path.GetTempPath(), $"RetailApp_Update{extension}");
 
                 using var response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
                 response.EnsureSuccessStatusCode();
@@ -125,16 +131,29 @@ namespace RetailApp.Services
                 fileStream.Close();
                 progress?.Report(100);
 
-                // تشغيل ملف التثبيت تلقائياً مع التثبيت الصامت دون فتح أي متصفح
-                Process.Start(new ProcessStartInfo
+                if (extension == ".exe")
                 {
-                    FileName = tempPath,
-                    Arguments = "/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS",
-                    UseShellExecute = true
-                });
+                    // تشغيل ملف التثبيت المباشر دون توجيه لأي متصفح
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = tempPath,
+                        Arguments = "/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS",
+                        UseShellExecute = true
+                    });
 
-                // إغلاق التطبيق الحالي ليتم استبدال الملفات
-                Application.Current.Shutdown();
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    // فتح مجلد الملف المحمل للمستخدم تلقائياً
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "explorer.exe",
+                        Arguments = $"/select,\"{tempPath}\"",
+                        UseShellExecute = true
+                    });
+                }
+
                 return true;
             }
             catch

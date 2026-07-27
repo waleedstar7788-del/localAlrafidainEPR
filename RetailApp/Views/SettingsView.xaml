@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:views="clr-namespace:RetailApp.Views"
              xmlns:settings="clr-namespace:RetailApp.Views.Settings"
              FlowDirection="RightToLeft">
              
@@ -81,7 +82,7 @@
                 <ScrollViewer Grid.Column="2" Padding="32" VerticalScrollBarVisibility="Auto">
                     <ContentControl Content="{Binding}">
                         <ContentControl.Resources>
-                            <!-- WPF requires DataTemplates in Triggers to be defined as Resources -->
+                            <!-- DataTemplates -->
                             <DataTemplate x:Key="CompanyTemplate"><settings:CompanySettingsView/></DataTemplate>
                             <DataTemplate x:Key="GeneralTemplate"><settings:GeneralSettingsView/></DataTemplate>
                             <DataTemplate x:Key="PosTemplate"><settings:PosSettingsView/></DataTemplate>
@@ -92,6 +93,7 @@
                             <DataTemplate x:Key="NotificationsTemplate"><settings:NotificationsSettingsView/></DataTemplate>
                             <DataTemplate x:Key="AppearanceTemplate"><settings:AppearanceSettingsView/></DataTemplate>
                             <DataTemplate x:Key="BackupTemplate"><settings:BackupSettingsView DataContext="{Binding BackupViewModel}"/></DataTemplate>
+                            <DataTemplate x:Key="UpdateTemplate"><views:UpdateView DataContext="{Binding UpdateViewModel}"/></DataTemplate>
                             <DataTemplate x:Key="LicenseTemplate"><settings:LicenseSettingsView DataContext="{Binding LicenseViewModel}"/></DataTemplate>
                             <DataTemplate x:Key="AboutTemplate"><settings:AboutSettingsView/></DataTemplate>
                             <DataTemplate x:Key="DefaultTemplate">
@@ -134,6 +136,9 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding SelectedCategory}" Value="النسخ الاحتياطي">
                                         <Setter Property="ContentTemplate" Value="{StaticResource BackupTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedCategory}" Value="تحديثات النظام">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource UpdateTemplate}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding SelectedCategory}" Value="تفعيل الترخيص">
                                         <Setter Property="ContentTemplate" Value="{StaticResource LicenseTemplate}"/>

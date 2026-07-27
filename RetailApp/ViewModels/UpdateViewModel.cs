@@ -20,6 +20,9 @@ namespace RetailApp.ViewModels
         private UpdateInfo? _availableUpdate;
 
         [ObservableProperty]
+        private bool _isUpdateAvailable;
+
+        [ObservableProperty]
         private bool _isChecking;
 
         [ObservableProperty]
@@ -51,6 +54,7 @@ namespace RetailApp.ViewModels
         public void SetAvailableUpdate(UpdateInfo updateInfo)
         {
             AvailableUpdate = updateInfo;
+            IsUpdateAvailable = true;
             StatusMessage = $"يتوفر تحديث جديد! الإصدار {updateInfo.Version}";
         }
 
@@ -59,16 +63,19 @@ namespace RetailApp.ViewModels
             IsChecking = true;
             StatusMessage = "جاري البحث عن تحديثات جديدة...";
             AvailableUpdate = null;
+            IsUpdateAvailable = false;
 
             var update = await _updateService.CheckForUpdatesAsync();
 
             if (update != null && update.Version != CurrentVersion)
             {
                 AvailableUpdate = update;
-                StatusMessage = "يتوفر تحديث جديد!";
+                IsUpdateAvailable = true;
+                StatusMessage = $"يتوفر تحديث جديد! الإصدار {update.Version}";
             }
             else
             {
+                IsUpdateAvailable = false;
                 StatusMessage = "أنت تستخدم أحدث إصدار من النظام.";
             }
 
@@ -95,11 +102,11 @@ namespace RetailApp.ViewModels
 
             if (success)
             {
-                StatusMessage = "تم تحميل التحديث بنجاح! سيتم تشغيل التثبيت الصامت الآن...";
+                StatusMessage = "تم تحميل التحديث بنجاح! جاري التثبيت التلقائي الآن...";
             }
             else
             {
-                StatusMessage = "حدث خطأ أثناء تحميل التحديث. يرجى التأكد من الاتصال بالإنترنت والمحاولة لاحقاً.";
+                StatusMessage = "حدث خطأ أثناء التحميل المباشر. يرجى التأكد من توفر ملف التثبيت المرفق في Release على GitHub.";
             }
 
             IsDownloading = false;

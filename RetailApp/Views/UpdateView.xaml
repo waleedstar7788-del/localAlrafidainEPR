@@ -39,7 +39,7 @@
 
             <!-- Update Info Card -->
             <Border Grid.Column="1" Style="{StaticResource KpiCard}" Margin="12,0,0,0" VerticalAlignment="Top" 
-                    Visibility="{Binding AvailableUpdate, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                    Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                 <StackPanel>
                     <TextBlock Text="تفاصيل وإضافات التحديث الجديد" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
                     
