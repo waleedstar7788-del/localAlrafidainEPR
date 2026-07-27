@@ -112,7 +112,6 @@ namespace RetailApp.Services
                         string cleanVersion = rawTag.TrimStart('v', 'V');
                         string releaseNotes = contentNode?.InnerText ?? titleNode?.InnerText ?? "";
                         
-                        // تنظيف وسوم الـ HTML للحصول على نص ملخص التحديث الصافي
                         releaseNotes = Regex.Replace(releaseNotes, "<.*?>", string.Empty).Trim();
 
                         string downloadUrl = $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{rawTag}/RetailApp_Setup.exe";
@@ -143,13 +142,28 @@ namespace RetailApp.Services
 
             try
             {
-                string extension = url.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ? ".zip" : ".exe";
-                string tempPath = Path.Combine(Path.GetTempPath(), $"RetailApp_Update{extension}");
-
                 using var response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+
+                // حماية من تحميل صفحات 404 HTML عند عدم إرفاق ملف الـ .exe
+                var contentType = response.Content.Headers.ContentType?.MediaType ?? "";
+                if (contentType.Contains("html", StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
 
                 long? totalBytes = response.Content.Headers.ContentLength;
+
+                // إذا كان حجم الملف أقل من 50 كيلوبايت فهو ليس ملف مثبت حقيقي
+                if (totalBytes.HasValue && totalBytes.Value < 50 * 1024)
+                {
+                    return false;
+                }
+
+                string tempPath = Path.Combine(Path.GetTempPath(), "RetailApp_Update_Installer.exe");
 
                 using var contentStream = await response.Content.ReadAsStreamAsync();
                 using var fileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
@@ -173,27 +187,15 @@ namespace RetailApp.Services
                 fileStream.Close();
                 progress?.Report(100);
 
-                if (extension == ".exe")
+                // تشغيل ملف التثبيت المباشر دون فتح متصفح
+                Process.Start(new ProcessStartInfo
                 {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = tempPath,
-                        Arguments = "/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS",
-                        UseShellExecute = true
-                    });
+                    FileName = tempPath,
+                    Arguments = "/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS",
+                    UseShellExecute = true
+                });
 
-                    Application.Current.Shutdown();
-                }
-                else
-                {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "explorer.exe",
-                        Arguments = $"/select,\"{tempPath}\"",
-                        UseShellExecute = true
-                    });
-                }
-
+                Application.Current.Shutdown();
                 return true;
             }
             catch

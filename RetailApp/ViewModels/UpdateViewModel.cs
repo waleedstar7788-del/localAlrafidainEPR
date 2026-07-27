@@ -106,7 +106,7 @@ namespace RetailApp.ViewModels
             }
             else
             {
-                StatusMessage = "حدث خطأ أثناء التحميل المباشر. يرجى التأكد من توفر ملف التثبيت المرفق في Release على GitHub.";
+                StatusMessage = "فشل التحميل: لم يتم العثور على ملف مثبت (.exe) مرفق بالإصدار على GitHub. يرجى رفع ملف التثبيت (.exe) في مربع المرفقات عند إطلاق Release.";
             }
 
             IsDownloading = false;
