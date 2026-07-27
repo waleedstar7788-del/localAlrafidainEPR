@@ -73,7 +73,7 @@ namespace RetailApp.Services
 
                     if (string.IsNullOrEmpty(downloadUrl))
                     {
-                        downloadUrl = $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{tagName}/RetailApp_Setup.exe";
+                        downloadUrl = await ScrapeReleaseAssetUrlAsync(tagName);
                     }
 
                     return new UpdateInfo
@@ -114,7 +114,7 @@ namespace RetailApp.Services
                         
                         releaseNotes = Regex.Replace(releaseNotes, "<.*?>", string.Empty).Trim();
 
-                        string downloadUrl = $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{rawTag}/RetailApp_Setup.exe";
+                        string downloadUrl = await ScrapeReleaseAssetUrlAsync(rawTag);
 
                         return new UpdateInfo
                         {
@@ -136,6 +136,26 @@ namespace RetailApp.Services
             }
         }
 
+        private async Task<string> ScrapeReleaseAssetUrlAsync(string tag)
+        {
+            if (string.IsNullOrWhiteSpace(tag)) return $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{tag}/RetailApp_Setup.exe";
+
+            try
+            {
+                string assetsPageUrl = $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/expanded_assets/{tag}";
+                var assetsPageResponse = await _httpClient.GetStringAsync(assetsPageUrl);
+                
+                var match = Regex.Match(assetsPageResponse, @"href=""(/[^""]+\.(exe|msi|zip|rar))""", RegexOptions.IgnoreCase);
+                if (match.Success)
+                {
+                    return $"https://github.com{match.Groups[1].Value}";
+                }
+            }
+            catch { }
+
+            return $"https://github.com/{GitHubOwner}/{GitHubRepo}/releases/download/{tag}/RetailApp_Setup.exe";
+        }
+
         public async Task<bool> DownloadUpdateAsync(string url, IProgress<double>? progress = null)
         {
             if (string.IsNullOrWhiteSpace(url)) return false;
@@ -148,7 +168,6 @@ namespace RetailApp.Services
                     return false;
                 }
 
-                // حماية من تحميل صفحات 404 HTML عند عدم إرفاق ملف الـ .exe
                 var contentType = response.Content.Headers.ContentType?.MediaType ?? "";
                 if (contentType.Contains("html", StringComparison.OrdinalIgnoreCase))
                 {
@@ -157,8 +176,7 @@ namespace RetailApp.Services
 
                 long? totalBytes = response.Content.Headers.ContentLength;
 
-                // إذا كان حجم الملف أقل من 50 كيلوبايت فهو ليس ملف مثبت حقيقي
-                if (totalBytes.HasValue && totalBytes.Value < 50 * 1024)
+                if (totalBytes.HasValue && totalBytes.Value < 50 * 1024 && !url.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }
@@ -187,7 +205,6 @@ namespace RetailApp.Services
                 fileStream.Close();
                 progress?.Report(100);
 
-                // تشغيل ملف التثبيت المباشر دون فتح متصفح
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = tempPath,
