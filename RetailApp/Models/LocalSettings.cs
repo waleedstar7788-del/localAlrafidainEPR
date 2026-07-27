@@ -5,7 +5,7 @@ namespace RetailApp.Models
         // General
         public string DefaultLanguage { get; set; } = "ar"; // ar or en
         public bool IsRTL { get; set; } = true;
-        public string Theme { get; set; } = "Dark"; // Dark, Light, System
+        public string Theme { get; set; } = "Light"; // Dark, Light, System
         public string AccentColor { get; set; } = "Blue";
         public bool AutoSave { get; set; } = true;
         public bool AutoRefresh { get; set; } = true;
