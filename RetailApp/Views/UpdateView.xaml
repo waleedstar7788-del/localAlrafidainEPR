@@ -10,11 +10,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header Hero Banner -->
-        <Border Grid.Row="0" Margin="0,0,0,24" CornerRadius="16" Padding="28,20">
+        <!-- ═══════════════════════════════════════════════════════════════
+             1. HERO HEADER BANNER (CYBER OBSIDIAN GLASS)
+        ═══════════════════════════════════════════════════════════════ -->
+        <Border Grid.Row="0" Margin="0,0,0,24" CornerRadius="18" Padding="32,24" BorderBrush="#334155" BorderThickness="1">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#0F172A" Offset="0"/>
+                    <GradientStop Color="#0B0F19" Offset="0"/>
                     <GradientStop Color="#1E293B" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
@@ -24,129 +26,174 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                        <Border Background="#2010B981" CornerRadius="8" Padding="8,4" Margin="0,0,10,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Border Background="#2010B981" BorderBrush="#3010B981" BorderThickness="1" CornerRadius="8" Padding="10,5">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="مركز التحديثات المباشرة" FontSize="11" FontWeight="Bold" Foreground="#10B981"/>
+                                <Ellipse Width="8" Height="8" Fill="#10B981" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="مركز التحديثات والترقية الفورية المباشرة" FontSize="11.5" FontWeight="Bold" Foreground="#10B981"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
-                    <TextBlock Text="تحديثات وترقيات نظام الرافدين ERP" FontSize="26" FontWeight="Bold" Foreground="#F8FAFC"/>
-                    <TextBlock Text="نظام التحديث التلقائي السلس يضمن لك الحصول على أحدث المميزات والأمان دائماً" FontSize="13" Foreground="#94A3B8" Margin="0,4,0,0"/>
+                    <TextBlock Text="ترقية وتحديثات نظام الرافدين ERP" FontSize="28" FontWeight="Bold" Foreground="#F8FAFC"/>
+                    <TextBlock Text="مساعد التحديث التلقائي يضمن لك الحصول على أحدث الإضافات الأمنية ومميزات المبيعات فور إطلاقها" FontSize="13.5" Foreground="#94A3B8" Margin="0,6,0,0"/>
                 </StackPanel>
 
-                <!-- Floating Glow Icon -->
-                <Border Grid.Column="1" Width="56" Height="56" CornerRadius="28" Background="#1510B981" VerticalAlignment="Center">
-                    <materialDesign:PackIcon Kind="Update" Width="30" Height="30" Foreground="#10B981" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <!-- Floating Icon with Soft Glow -->
+                <Border Grid.Column="1" Width="64" Height="64" CornerRadius="32" Background="#1510B981" BorderBrush="#3010B981" BorderThickness="1" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="Update" Width="34" Height="34" Foreground="#10B981" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
         </Border>
 
-        <!-- Main Content Area -->
+        <!-- ═══════════════════════════════════════════════════════════════
+             2. MAIN WORKSPACE (DUAL-PANEL DASHBOARD LAYOUT)
+        ═══════════════════════════════════════════════════════════════ -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="340"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- 1. Left Panel: Current Version Status -->
-            <Border Grid.Column="0" Style="{StaticResource KpiCard}" Margin="0,0,16,0" VerticalAlignment="Top" Padding="24">
-                <StackPanel>
-                    <TextBlock Text="إصدار النظام الحالي" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+            <!-- ─── LEFT PANEL: CURRENT VERSION & SYSTEM DIAGNOSTICS ─── -->
+            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                <!-- Current Version Card -->
+                <Border Style="{StaticResource KpiCard}" Padding="24" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="إصدار النظام المحلي" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
 
-                    <Border Background="#090D16" CornerRadius="12" Padding="20" Margin="0,0,0,20" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
-                        <StackPanel HorizontalAlignment="Center">
-                            <materialDesign:PackIcon Kind="CheckCircleOutline" Width="42" Height="42" Foreground="{DynamicResource BrandSuccessBrush}" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                            <TextBlock Text="{Binding CurrentVersion}" FontSize="32" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="النسخة المشغلة حالياً" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Button Command="{Binding CheckForUpdatesCommand}" Style="{StaticResource ModernPrimaryButton}" Height="45" Margin="0,0,0,12">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Refresh" Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="التحقق من وجود تحديثات" FontSize="13.5"/>
-                        </StackPanel>
-                    </Button>
-
-                    <ProgressBar IsIndeterminate="{Binding IsChecking}" Visibility="{Binding IsChecking, Converter={StaticResource BooleanToVisibilityConverter}}" Height="4" Margin="0,8,0,0"/>
-                    <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource BrandSuccessBrush}" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,12,0,0" FontSize="12.5" FontWeight="SemiBold"/>
-                </StackPanel>
-            </Border>
-
-            <!-- 2. Right Panel: Available New Release Card -->
-            <Border Grid.Column="1" Style="{StaticResource KpiCard}" VerticalAlignment="Top" Padding="28"
-                    Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
-                <StackPanel>
-                    <!-- Title Bar -->
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="تفاصيل وإضافات الإصدار الجديد" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                            <TextBlock Text="يتوفر تحديث جاهز للتحميل والتثبيت المباشر بضغطة زر" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
-                        </StackPanel>
-
-                        <!-- Version Badge -->
-                        <Border Grid.Column="1" Background="#1510B981" BorderBrush="#10B981" BorderThickness="1" CornerRadius="10" Padding="14,6">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Creation" Width="16" Height="16" Foreground="#10B981" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding AvailableUpdate.Version, StringFormat='الإصدار v{0}'}" FontSize="15" FontWeight="Bold" Foreground="#10B981" VerticalAlignment="Center"/>
+                        <Border Background="#090D16" CornerRadius="14" Padding="24,20" Margin="0,0,0,20" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border Width="48" Height="48" CornerRadius="24" Background="#1510B981" Margin="0,0,0,12" HorizontalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="CheckCircleOutline" Width="28" Height="28" Foreground="{DynamicResource BrandSuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="{Binding CurrentVersion}" FontSize="34" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="النسخة المشغلة محلياً" FontSize="12.5" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
                             </StackPanel>
                         </Border>
-                    </Grid>
 
-                    <Separator Style="{StaticResource ModernSeparator}" Margin="0,0,0,20"/>
+                        <Button Command="{Binding CheckForUpdatesCommand}" Style="{StaticResource ModernPrimaryButton}" Height="46" Margin="0,0,0,12">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Refresh" Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="التحقق من وجود تحديثات" FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
 
-                    <!-- Info Grid -->
-                    <Grid Margin="0,0,0,16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="تاريخ إطلاق التحديث:" FontSize="13" Foreground="{DynamicResource TextMutedBrush}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding AvailableUpdate.ReleaseDate, StringFormat=yyyy-MM-dd}" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                    </Grid>
+                        <ProgressBar IsIndeterminate="{Binding IsChecking}" Visibility="{Binding IsChecking, Converter={StaticResource BooleanToVisibilityConverter}}" Height="4" Margin="0,6,0,0"/>
+                        
+                        <!-- Status Alert Box -->
+                        <Border Background="#090D16" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,12,0,0">
+                            <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource BrandSuccessBrush}" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" FontSize="12.5" FontWeight="SemiBold" LineHeight="18"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
 
-                    <TextBlock Text="الإضافات والمميزات والتحسينات الجديدة:" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
-                    
-                    <!-- Release Notes Panel -->
-                    <Border Background="#090D16" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,0,0,24">
-                        <ScrollViewer MaxHeight="140" VerticalScrollBarVisibility="Auto">
-                            <TextBlock Text="{Binding AvailableUpdate.ReleaseNotes}" TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13.5" LineHeight="22"/>
-                        </ScrollViewer>
-                    </Border>
+                <!-- System Matrix Card -->
+                <Border Style="{StaticResource KpiCard}" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="معايير الأمان والتوافقية" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                        <Grid Margin="0,4">
+                            <TextBlock Text="• معمارية النظام:" FontSize="12.5" Foreground="{DynamicResource TextMutedBrush}"/>
+                            <TextBlock Text="Windows 64-bit" FontSize="12.5" FontWeight="SemiBold" Foreground="#10B981" HorizontalAlignment="Left"/>
+                        </Grid>
+                        <Grid Margin="0,4">
+                            <TextBlock Text="• بيئة التشغيل:" FontSize="12.5" Foreground="{DynamicResource TextMutedBrush}"/>
+                            <TextBlock Text=".NET 8.0 Runtime" FontSize="12.5" FontWeight="SemiBold" Foreground="#38BDF8" HorizontalAlignment="Left"/>
+                        </Grid>
+                        <Grid Margin="0,4">
+                            <TextBlock Text="• قاعدة البيانات:" FontSize="12.5" Foreground="{DynamicResource TextMutedBrush}"/>
+                            <TextBlock Text="SQLite Encrypted" FontSize="12.5" FontWeight="SemiBold" Foreground="#F59E0B" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
 
-                    <!-- Main Glowing Download Button -->
-                    <Button Command="{Binding DownloadUpdateCommand}" IsEnabled="{Binding IsDownloading, Converter={StaticResource InvertBooleanConverter}}" 
-                            Style="{StaticResource ModernSuccessButton}" Height="50">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Download" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="تحميل وتثبيت التحديث الآن ⚡" FontSize="15" FontWeight="Bold"/>
-                        </StackPanel>
-                    </Button>
+            <!-- ─── RIGHT PANEL: UPDATE SHOWCASE / UP-TO-DATE STATUS ─── -->
+            <Grid Grid.Column="1">
+                <!-- A. Available Update Card (Visible when IsUpdateAvailable = true) -->
+                <Border Style="{StaticResource KpiCard}" Padding="32" VerticalAlignment="Top"
+                        Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                    <StackPanel>
+                        <!-- Card Header -->
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="تفاصيل وإضافات التحديث الجديد" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="يتوفر إصدار أحدث جاهز للتحميل والتثبيت المباشر بضغطة زر واحدة" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                            </StackPanel>
 
-                    <!-- Real-time Download Progress Bar (No Text Overlap) -->
-                    <Border Visibility="{Binding IsDownloading, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                            Background="#090D16" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,16,0,0">
-                        <StackPanel>
-                            <Grid Margin="0,0,0,10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="جاري التحميل المباشر والتثبيت..." FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding ProgressText}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrandSuccessBrush}"/>
-                            </Grid>
-                            <ProgressBar Value="{Binding DownloadProgress}" Maximum="100" Height="10" IsIndeterminate="False" Foreground="{DynamicResource BrandSuccessBrush}"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </Border>
+                            <!-- Version Pill Badge -->
+                            <Border Grid.Column="1" Background="#1510B981" BorderBrush="#10B981" BorderThickness="1" CornerRadius="12" Padding="16,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Creation" Width="18" Height="18" Foreground="#10B981" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding AvailableUpdate.Version, StringFormat='الإصدار v{0}'}" FontSize="16" FontWeight="Bold" Foreground="#10B981" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Separator Style="{StaticResource ModernSeparator}" Margin="0,0,0,24"/>
+
+                        <!-- Release Info Metadata -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="تاريخ إطلاق التحديث:" FontSize="13.5" Foreground="{DynamicResource TextMutedBrush}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding AvailableUpdate.ReleaseDate, StringFormat=yyyy-MM-dd}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </Grid>
+
+                        <TextBlock Text="سجل التغييرات والمميزات الجديدة:" FontSize="14.5" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                        
+                        <!-- Formatted Release Notes Container -->
+                        <Border Background="#090D16" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="20" Margin="0,0,0,28">
+                            <ScrollViewer MaxHeight="160" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="{Binding AvailableUpdate.ReleaseNotes}" TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14" LineHeight="24"/>
+                            </ScrollViewer>
+                        </Border>
+
+                        <!-- Glowing Primary Action Button -->
+                        <Button Command="{Binding DownloadUpdateCommand}" IsEnabled="{Binding IsDownloading, Converter={StaticResource InvertBooleanConverter}}" 
+                                Style="{StaticResource ModernSuccessButton}" Height="54" Padding="32,0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Download" Width="22" Height="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="تحميل وتثبيت التحديث الآن ⚡" FontSize="16" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Real-time Download Progress Section -->
+                        <Border Visibility="{Binding IsDownloading, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                Background="#090D16" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="20" Margin="0,20,0,0">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="جاري التحميل المباشر والتثبيت التلقائي..." FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ProgressText}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource BrandSuccessBrush}"/>
+                                </Grid>
+                                <ProgressBar Value="{Binding DownloadProgress}" Maximum="100" Height="10" IsIndeterminate="False" Foreground="{DynamicResource BrandSuccessBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- B. Up-To-Date Showcase View (Visible when IsUpdateAvailable = false) -->
+                <Border Style="{StaticResource KpiCard}" Padding="40" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                        Visibility="{Binding IsUpdateAvailable, Converter={StaticResource InvertBooleanToVisibilityConverter}, FallbackValue=Visible}">
+                    <StackPanel HorizontalAlignment="Center" Margin="0,40">
+                        <Border Width="80" Height="80" CornerRadius="40" Background="#1510B981" BorderBrush="#3010B981" BorderThickness="1" HorizontalAlignment="Center" Margin="0,0,0,24">
+                            <materialDesign:PackIcon Kind="CheckDecagram" Width="44" Height="44" Foreground="#10B981" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="نظامك محدّث لأحدث إصدار ✨" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="أنت تمتلك أحدث المميزات والإصلاحات الأمنية الخاصة بنظام الرافدين ERP." FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
